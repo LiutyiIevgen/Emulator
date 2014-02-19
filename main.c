@@ -9,6 +9,9 @@
 #include <stdlib.h>
 #include <xc.h>
 #include "Timer.h"
+#include "Encoder.h"
+#include "MainLibrary.h"
+#include "Configuration.h"
 
 // FOSC
 #pragma config FOSFPR = XT_PLL16        // Oscillator (XT w/PLL 16x)
@@ -47,12 +50,40 @@
 
 // Function prototype for timer 1 ISR
 void __attribute__((__interrupt__, __auto_psv__)) _T1Interrupt(void);
-
+// Function prototype for timer 2 ISR
+void __attribute__((__interrupt__, __auto_psv__)) _T2Interrupt(void);
+char startSignal = -1;
 int main(int argc, char** argv) {
     ADPCFG = 0xFFFF; //RA only digit
 
+    Delay(3000000);
+    TRISCbits.TRISC13 = 0;//set output on RC13
+    LATCbits.LATC13 = 1;
+    //int i = 0;
+    //for(i; i < 10000; i++)
+    //{
+        //ForwardDirectionStroke();
+        //Delay(2000);
+        //LATCbits.LATC13 = 1 - LATCbits.LATC13; // RC13 value (LED VD1 => ON)
+    //}
     StartTimer1();
-    while(1);
+    StartTimer2();
+    while(1)
+    {
+        if(startSignal==EncReadStartSignal())
+            continue;
+        startSignal = EncReadStartSignal();
+        if(startSignal)
+        {
+            T1CONbits.TON = 1;
+            T2CONbits.TON = 1;
+        }
+        else
+        {
+            T1CONbits.TON = 0;
+            T2CONbits.TON = 0;
+        }
+    }
     return (EXIT_SUCCESS);
 }
 
@@ -60,6 +91,21 @@ int main(int argc, char** argv) {
 void __attribute__((__interrupt__, __auto_psv__)) _T1Interrupt(void)
 {
     _T1IF = 0;
-    TRISCbits.TRISC13 = 0;//set output on RC13
-    LATCbits.LATC13 = 1 - LATCbits.LATC13; // RC13 value (LED VD1 => ON)
+    if(!EncGetDirection())
+        EncForwardDirectionStroke();
+    else
+        EncReverseDirectionStroke();
+   // TRISCbits.TRISC13 = 0;//set output on RC13
+   // LATCbits.LATC13 = 1 - LATCbits.LATC13; // RC13 value (LED VD1 => ON)
+}
+
+void __attribute__((__interrupt__, __auto_psv__)) _T2Interrupt(void)
+{
+    _T2IF = 0;
+    EncStartControl();
+    EncSpeedControl();
+    EncStopControl();
+    EncSlowdownControl();
+
+    
 }

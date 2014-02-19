@@ -1,4 +1,4 @@
-build/default/production/Timer.o:  \
+build/default/debug/Timer.o:  \
 Timer.c  \
 Timer.h  \
 Configuration.h 

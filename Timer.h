@@ -6,3 +6,4 @@
  */
 
 void StartTimer1();
+void StartTimer2();
