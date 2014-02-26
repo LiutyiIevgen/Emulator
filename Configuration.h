@@ -7,5 +7,7 @@
 
 #define SPEED 10000;// mm/sec
 #define DISTANCE_PER_MARK 0.5; // mm/sec
-#define DISTANCE 300000; //mm
+#define EXACT_STOP_ZONE 100; //mm
+#define LOW_SEN_POS -250000; //mm
+#define HIGH_SEN_POS 50000; //mm
 #define SPEED_INCREASE 10; // 1 m/sec

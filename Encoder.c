@@ -3,6 +3,10 @@
 #include "MainLibrary.h"
 #include "Configuration.h"
 
+//global vars
+extern long _lowEdge;
+extern long _highEdge;
+
 long EncoderPositionCounter = 0;
 long EncoderPrevPositionCounter = 0;
 unsigned int currentSpeed = 0;
@@ -54,7 +58,7 @@ void EncForwardDirectionStroke()
     LATBbits.LATB3 = 0;
     LATBbits.LATB4 = 0;
     LATBbits.LATB5 = 0;
-    EncoderPositionCounter++;
+    EncoderPositionCounter--;
 }
 
 void EncReverseDirectionStroke()
@@ -101,7 +105,7 @@ void EncReverseDirectionStroke()
     LATBbits.LATB3 = 0;
     LATBbits.LATB4 = 1;
     LATBbits.LATB5 = 0;
-    EncoderPositionCounter--;
+    EncoderPositionCounter++;
 }
 
 int EncCountV()
@@ -115,23 +119,95 @@ long EncGetS()
 {
     return EncoderPositionCounter*DISTANCE_PER_MARK;
 }
+
+void InitCounter()
+{
+    long highEdge = _highEdge;
+    float distancePerMark = DISTANCE_PER_MARK;
+    EncoderPositionCounter = highEdge/distancePerMark;
+}
+
 unsigned char EncReadStartSignal()
 {
     unsigned char start = 0;
     TRISBbits.TRISB14 = 0;//set output on RB14
-    TRISDbits.TRISD8 = 0;//set output on RD8
+    TRISDbits.TRISD10 = 0;//set output on RD10
     TRISDbits.TRISD0 = 1;//set input on RD0
     LATBbits.LATB14 = 0; // OE1
-    LATDbits.LATD8 = 1; // LE1
+    LATDbits.LATD10 = 1; // LE3
     Delay(100);
     LATBbits.LATB14 = 0; // OE1
-    LATDbits.LATD8 = 0; // LE1
+    LATDbits.LATD10 = 0; // LE3
     Delay(10);
     if(PORTDbits.RD0 == 0)
         start = 1;
     else
         start = 0;
     return start;
+}
+
+unsigned char EncReadOverZeroSignal()
+{
+    unsigned char start = 0;
+    TRISBbits.TRISB14 = 0;//set output on RB14
+    TRISDbits.TRISD10 = 0;//set output on RD10
+    TRISDbits.TRISD1 = 1;//set input on RD1
+    LATBbits.LATB14 = 0; // OE1
+    LATDbits.LATD10 = 1; // LE3
+    Delay(100);
+    LATBbits.LATB14 = 0; // OE1
+    LATDbits.LATD10 = 0; // LE3
+    Delay(10);
+    if(PORTDbits.RD1 == 0)
+        start = 1;
+    else
+        start = 0;
+    return start;
+}
+
+void WriteOutputSignals(int data)
+{
+    data = ~data;
+    TRISD = TRISD&0xFF00;
+    TRISDbits.TRISD8 = 0;//set output on RD8
+    TRISDbits.TRISD9 = 0;//set output on RD9
+
+    TRISDbits.TRISD10 = 0;//set output on RD10
+    TRISDbits.TRISD11 = 0;//set output on RD11
+    TRISBbits.TRISB14 = 0;//set output on RB14
+
+    LATDbits.LATD10 = 0; // LE3 // set z state
+    LATDbits.LATD11 = 0; // LE4
+    LATBbits.LATB14 = 1; // OE1
+
+    char buf = data&0x00FF;
+    LATDbits.LATD0 = buf&0x01; buf>>=1;
+    LATDbits.LATD1 = buf&0x01; buf>>=1;
+    LATDbits.LATD2 = buf&0x01; buf>>=1;
+    LATDbits.LATD3 = buf&0x01; buf>>=1;
+    LATDbits.LATD4 = buf&0x01; buf>>=1;
+    LATDbits.LATD5 = buf&0x01; buf>>=1;
+    LATDbits.LATD6 = buf&0x01; buf>>=1;
+    LATDbits.LATD7 = buf&0x01; buf>>=1;
+
+    LATDbits.LATD8 = 1; // LE1
+    Delay(100);
+    LATDbits.LATD8 = 0; // LE1
+    Delay(100);
+
+    buf = (data>>8)&0x00FF;
+    LATDbits.LATD0 = buf&0x01; buf>>=1;
+    LATDbits.LATD1 = buf&0x01; buf>>=1;
+    LATDbits.LATD2 = buf&0x01; buf>>=1;
+    LATDbits.LATD3 = buf&0x01; buf>>=1;
+    LATDbits.LATD4 = buf&0x01; buf>>=1;
+    LATDbits.LATD5 = buf&0x01; buf>>=1;
+    LATDbits.LATD6 = buf&0x01; buf>>=1;
+    LATDbits.LATD7 = buf&0x01; buf>>=1;
+    LATDbits.LATD9 = 1; // LE2
+    Delay(100);
+    LATDbits.LATD9 = 0; // LE2
+    Delay(100);
 }
 
 void EncSpeedControl()
@@ -147,25 +223,40 @@ void EncSpeedControl()
 
 void EncStopControl()
 {
-    long distance = DISTANCE;
     long s = EncGetS();
 
-    if(direction == 0 && s >= distance || direction == 1 && s <= 0)
+    if(direction == 0 && s <= _lowEdge || direction == 1 && s >= _highEdge)
     {
         T1CONbits.TON = 0;
         necessarySpeed = 0;
-        //T2CONbits.TON = 0;
     }
+}
+
+void ExactStopSensors()
+{
+    long highEdge = HIGH_SEN_POS;
+    long lowEdge = LOW_SEN_POS;
+    long exactStopZone = EXACT_STOP_ZONE;
+    long s = EncGetS();
+    if((s <= lowEdge && s >= lowEdge - exactStopZone) ||
+            (s >= highEdge && s <= highEdge + exactStopZone))
+    {
+        if(direction == 0)
+            WriteOutputSignals(2);
+        else
+            WriteOutputSignals(1);
+    }
+    else
+        WriteOutputSignals(3);
 }
 
 void EncSlowdownControl()
 {
-    long distance = DISTANCE;
     long slowdown_zone = 52000;
     long s = EncGetS();
 
-    if( (direction == 0 && s >= distance - slowdown_zone) ||
-            (direction == 1 && s <= slowdown_zone))
+    if( (direction == 0 && s <= _lowEdge + slowdown_zone) ||
+            (direction == 1 && s >= _highEdge - slowdown_zone))
         necessarySpeed = 400;
 
 }
@@ -185,76 +276,13 @@ unsigned int EncGetDirection()
     return direction;
 }
 
-/*void EncSpeedControll()
+void TrySetOverRise()
 {
-    //int v = EncCountV();
-
-    unsigned int speed_increase = SPEED_INCREASE;
-    long distance = DISTANCE;
-    float distance_per_mark = DISTANCE_PER_MARK;
-    long slowdown_zone = 52000;
-    long s = EncGetS();
-
-    reverse = EncReadReverseSignal();
-    if(reverse == 1)
+    long lowSenPos = LOW_SEN_POS;
+    if(EncReadOverZeroSignal() == 1 && (_lowEdge > lowSenPos - 1000))
     {
-        if(direction == 0) // forward
-        {
-            if(s >= distance - slowdown_zone)
-            {
-                if(current_speed <= 400)
-                {
-                    if(s >= distance)
-                    {
-                        T1CONbits.TON = 0;
-                        T2CONbits.TON = 0;
-                        Delay(20000000);
-                        direction = 1;
-                        T1CONbits.TON = 1;
-                        T2CONbits.TON = 1;
-                    }
-                }
-                else
-                {
-                    current_speed -= speed_increase;
-                    PR1 = 24000000/(current_speed/distance_per_mark);
-                }
-                return;
-            }
-            if(current_speed <= speed)
-            {
-                current_speed += speed_increase;
-                PR1 = 24000000/(current_speed/distance_per_mark);
-            }
-        }
-        else // reverse
-        {
-            if(s <= slowdown_zone)
-            {
-                if(current_speed <= 400)
-                {
-                    if(s <= 0)
-                    {
-                        T1CONbits.TON = 0;
-                        T2CONbits.TON = 0;
-                        Delay(20000000);
-                        direction = 0;
-                        T1CONbits.TON = 1;
-                        T2CONbits.TON = 1;
-                    }
-                }
-                else
-                {
-                    current_speed -= speed_increase;
-                    PR1 = 24000000/(current_speed/distance_per_mark);
-                }
-                return;
-            }
-            if(current_speed <= speed)
-            {
-                current_speed += speed_increase;
-                PR1 = 24000000/(current_speed/distance_per_mark);
-            }
-        }
+        _lowEdge -= 1000;
     }
-} */
+    else if(EncReadOverZeroSignal() == 0)
+        _lowEdge = lowSenPos;
+}

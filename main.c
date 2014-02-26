@@ -12,6 +12,7 @@
 #include "Encoder.h"
 #include "MainLibrary.h"
 #include "Configuration.h"
+#include "globals.h"
 
 // FOSC
 #pragma config FOSFPR = XT_PLL16        // Oscillator (XT w/PLL 16x)
@@ -52,9 +53,15 @@
 void __attribute__((__interrupt__, __auto_psv__)) _T1Interrupt(void);
 // Function prototype for timer 2 ISR
 void __attribute__((__interrupt__, __auto_psv__)) _T2Interrupt(void);
+// Function prototype for timer 3 ISR
+void __attribute__((__interrupt__, __auto_psv__)) _T3Interrupt(void);
 char startSignal = -1;
 int main(int argc, char** argv) {
     ADPCFG = 0xFFFF; //RA only digit
+    TRISDbits.TRISD8 = 0;//set output on RD8
+    TRISDbits.TRISD9 = 0;//set output on RD9
+    LATDbits.LATD8 = 0; // LE1
+    LATDbits.LATD9 = 0; // LE2
 
     Delay(3000000);
     TRISCbits.TRISC13 = 0;//set output on RC13
@@ -66,24 +73,13 @@ int main(int argc, char** argv) {
         //Delay(2000);
         //LATCbits.LATC13 = 1 - LATCbits.LATC13; // RC13 value (LED VD1 => ON)
     //}
+    InitCounter();
+    WriteOutputSignals(3);
     StartTimer1();
     StartTimer2();
-    while(1)
-    {
-        if(startSignal==EncReadStartSignal())
-            continue;
-        startSignal = EncReadStartSignal();
-        if(startSignal)
-        {
-            T1CONbits.TON = 1;
-            T2CONbits.TON = 1;
-        }
-        else
-        {
-            T1CONbits.TON = 0;
-            T2CONbits.TON = 0;
-        }
-    }
+    StartTimer3();
+
+    while(1);
     return (EXIT_SUCCESS);
 }
 
@@ -105,7 +101,27 @@ void __attribute__((__interrupt__, __auto_psv__)) _T2Interrupt(void)
     EncStartControl();
     EncSpeedControl();
     EncStopControl();
+    ExactStopSensors();
     EncSlowdownControl();
 
-    
+}
+
+void __attribute__((__interrupt__, __auto_psv__)) _T3Interrupt(void)
+{
+    _T3IF = 0;
+    TrySetOverRise();
+    char signal = EncReadStartSignal();
+    if(startSignal==signal)
+            return;
+    startSignal = signal;
+    if(startSignal)
+    {
+        T1CONbits.TON = 1;
+        T2CONbits.TON = 1;
+    }
+    else
+    {
+        T1CONbits.TON = 0;
+        T2CONbits.TON = 0;
+    }
 }

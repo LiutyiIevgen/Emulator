@@ -3,4 +3,5 @@ main.c  \
 Timer.h  \
 Encoder.h  \
 MainLibrary.h  \
- Configuration.h 
+ Configuration.h  \
+globals.h 
