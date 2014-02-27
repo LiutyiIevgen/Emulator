@@ -238,13 +238,13 @@ void ExactStopSensors()
     long lowEdge = LOW_SEN_POS;
     long exactStopZone = EXACT_STOP_ZONE;
     long s = EncGetS();
-    if((s <= lowEdge && s >= lowEdge - exactStopZone) ||
-            (s >= highEdge && s <= highEdge + exactStopZone))
+    if(s <= lowEdge && s >= lowEdge - exactStopZone)
     {
-        if(direction == 0)
-            WriteOutputSignals(2);
-        else
-            WriteOutputSignals(1);
+         WriteOutputSignals(2);
+    }
+    else if(s >= highEdge && s <= highEdge + exactStopZone)
+    {
+        WriteOutputSignals(1);
     }
     else
         WriteOutputSignals(3);

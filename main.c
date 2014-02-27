@@ -74,7 +74,7 @@ int main(int argc, char** argv) {
         //LATCbits.LATC13 = 1 - LATCbits.LATC13; // RC13 value (LED VD1 => ON)
     //}
     InitCounter();
-    WriteOutputSignals(3);
+    WriteOutputSignals(1);
     StartTimer1();
     StartTimer2();
     StartTimer3();
@@ -100,8 +100,8 @@ void __attribute__((__interrupt__, __auto_psv__)) _T2Interrupt(void)
     _T2IF = 0;
     EncStartControl();
     EncSpeedControl();
-    EncStopControl();
     ExactStopSensors();
+    EncStopControl();
     EncSlowdownControl();
 
 }
