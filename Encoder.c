@@ -135,7 +135,7 @@ unsigned char EncReadStartSignal()
     TRISDbits.TRISD0 = 1;//set input on RD0
     LATBbits.LATB14 = 0; // OE1
     LATDbits.LATD10 = 1; // LE3
-    Delay(100);
+    Delay(10);
     LATBbits.LATB14 = 0; // OE1
     LATDbits.LATD10 = 0; // LE3
     Delay(10);
@@ -154,7 +154,7 @@ unsigned char EncReadOverZeroSignal()
     TRISDbits.TRISD1 = 1;//set input on RD1
     LATBbits.LATB14 = 0; // OE1
     LATDbits.LATD10 = 1; // LE3
-    Delay(100);
+    Delay(10);
     LATBbits.LATB14 = 0; // OE1
     LATDbits.LATD10 = 0; // LE3
     Delay(10);

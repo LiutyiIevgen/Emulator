@@ -1,4 +1,4 @@
-Microchip Technology Inc, v8ˆ\
+Microchip Technology Inc, vH‚N
 
 Tool Name:
   c:\program files\microchip\xc16\v1.21\bin\bin\..\bin/elf-ld.exe
@@ -25,10 +25,10 @@ Command:
   build/default/debug/Timer.o \
   build/default/debug/Encoder.o \
   build/default/debug/MainLibrary.o \
-  -TC:\Users\0982~1\AppData\Local\Temp\tmp00001104.00 \
-  -TC:\Users\0982~1\AppData\Local\Temp\tmp00001104.01 \
-  -TC:\Users\0982~1\AppData\Local\Temp\tmp00001104.02 \
-  -TC:\Users\0982~1\AppData\Local\Temp\tmp00001104.03 \
+  -TC:\Users\Jeka\AppData\Local\Temp\tmp0000180c.00 \
+  -TC:\Users\Jeka\AppData\Local\Temp\tmp0000180c.01 \
+  -TC:\Users\Jeka\AppData\Local\Temp\tmp0000180c.02 \
+  -TC:\Users\Jeka\AppData\Local\Temp\tmp0000180c.03 \
   --defsym=__MPLAB_BUILD=1 \
   --defsym=__MPLAB_DEBUG=1 \
   --defsym=__DEBUG=1 \
@@ -91,10 +91,10 @@ Program Memory  [Origin = 0x100, Length = 0x17efe]
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x100               0x32a           0x4bf  (1215)
-.text                        0x42a               0x764           0xb16  (2838)
-.dinit                       0xb8e                0x22            0x33  (51)
+.text                        0x42a               0x76e           0xb25  (2853)
+.dinit                       0xb98                0x22            0x33  (51)
 
-                     Total program memory used (bytes):         0x1008  (4104) 2%
+                     Total program memory used (bytes):         0x1017  (4119) 2%
 
 
 Data Memory  [Origin = 0x800, Length = 0x2000]
@@ -176,44 +176,44 @@ External Symbols in Program Memory (by address):
                   0x000848                  _EncSpeedControl
                   0x0008a6                  _EncStopControl
                   0x0008dc                  _ExactStopSensors
-                  0x000962                  _EncSlowdownControl
-                  0x0009aa                  _EncStartControl
-                  0x0009d0                  _EncGetDirection
-                  0x0009da                  _TrySetOverRise
-                  0x000a20                  _main
-                  0x000a4a                  __T1Interrupt
-                  0x000a7c                  __T2Interrupt
-                  0x000aaa                  __T3Interrupt
-                  0x000af8                  _StartTimer1
-                  0x000b1e                  _StartTimer2
-                  0x000b44                  _StartTimer3
-                  0x000b6a                  _Delay
+                  0x000950                  _EncSlowdownControl
+                  0x000998                  _EncStartControl
+                  0x0009be                  _EncGetDirection
+                  0x0009c8                  _TrySetOverRise
+                  0x000a0e                  _main
+                  0x000a38                  __T1Interrupt
+                  0x000a6a                  __T2Interrupt
+                  0x000a98                  __T3Interrupt
+                  0x000b02                  _StartTimer1
+                  0x000b28                  _StartTimer2
+                  0x000b4e                  _StartTimer3
+                  0x000b74                  _Delay
 
 External Symbols in Program Memory (by name):
 
-                  0x000b6a                  _Delay
+                  0x000b74                  _Delay
                   0x00050a                  _EncCountV
                   0x00042a                  _EncForwardDirectionStroke
-                  0x0009d0                  _EncGetDirection
+                  0x0009be                  _EncGetDirection
                   0x000556                  _EncGetS
                   0x0005e0                  _EncReadOverZeroSignal
                   0x0005a6                  _EncReadStartSignal
                   0x00049a                  _EncReverseDirectionStroke
-                  0x000962                  _EncSlowdownControl
+                  0x000950                  _EncSlowdownControl
                   0x000848                  _EncSpeedControl
-                  0x0009aa                  _EncStartControl
+                  0x000998                  _EncStartControl
                   0x0008a6                  _EncStopControl
                   0x0008dc                  _ExactStopSensors
                   0x000578                  _InitCounter
-                  0x000af8                  _StartTimer1
-                  0x000b1e                  _StartTimer2
-                  0x000b44                  _StartTimer3
-                  0x0009da                  _TrySetOverRise
+                  0x000b02                  _StartTimer1
+                  0x000b28                  _StartTimer2
+                  0x000b4e                  _StartTimer3
+                  0x0009c8                  _TrySetOverRise
                   0x00061a                  _WriteOutputSignals
                   0x000194                  __DefaultInterrupt
-                  0x000a4a                  __T1Interrupt
-                  0x000a7c                  __T2Interrupt
-                  0x000aaa                  __T3Interrupt
+                  0x000a38                  __T1Interrupt
+                  0x000a6a                  __T2Interrupt
+                  0x000a98                  __T3Interrupt
                   0x000198                  ___divsf3
                   0x00021c                  ___fixsfsi
                   0x00025e                  ___fixunssfsi
@@ -232,7 +232,7 @@ External Symbols in Program Memory (by name):
                   0x000314                  __funpack2
                   0x000126                  __psv_init
                   0x000100                  __resetPRI
-                  0x000a20                  _main
+                  0x000a0e                  _main
 
 Memory Configuration
 
@@ -418,12 +418,12 @@ userdata
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x232f
+.debug_info       0x000000       0x2353
  *(.debug_info)
- .debug_info      0x000000        0x9e9 build/default/debug/main.o
- .debug_info      0x0009e9        0xb4d build/default/debug/Timer.o
- .debug_info      0x001536        0xd3e build/default/debug/Encoder.o
- .debug_info      0x002274         0xbb build/default/debug/MainLibrary.o
+ .debug_info      0x000000        0xa0d build/default/debug/main.o
+ .debug_info      0x000a0d        0xb4d build/default/debug/Timer.o
+ .debug_info      0x00155a        0xd3e build/default/debug/Encoder.o
+ .debug_info      0x002298         0xbb build/default/debug/MainLibrary.o
  *(.gnu.linkonce.wi.*)
 
 .debug_abbrev     0x000000        0x41e
@@ -433,12 +433,12 @@ userdata
  .debug_abbrev    0x000223        0x1a7 build/default/debug/Encoder.o
  .debug_abbrev    0x0003ca         0x54 build/default/debug/MainLibrary.o
 
-.debug_line       0x000000        0xc41
+.debug_line       0x000000        0xc27
  *(.debug_line)
- .debug_line      0x000000        0x20b build/default/debug/main.o
- .debug_line      0x00020b        0x17b build/default/debug/Timer.o
- .debug_line      0x000386        0x85c build/default/debug/Encoder.o
- .debug_line      0x000be2         0x5f build/default/debug/MainLibrary.o
+ .debug_line      0x000000        0x219 build/default/debug/main.o
+ .debug_line      0x000219        0x17b build/default/debug/Timer.o
+ .debug_line      0x000394        0x834 build/default/debug/Encoder.o
+ .debug_line      0x000bc8         0x5f build/default/debug/MainLibrary.o
 
 .debug_frame      0x000000        0x1c0
  *(.debug_frame)
@@ -497,11 +497,11 @@ userdata
                   0x000014          0x4 LONG 0x194 DEFINED (__INT0Interrupt)?ABSOLUTE (__INT0Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000016          0x4 LONG 0x194 DEFINED (__IC1Interrupt)?ABSOLUTE (__IC1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000018          0x4 LONG 0x194 DEFINED (__OC1Interrupt)?ABSOLUTE (__OC1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00001a          0x4 LONG 0xa4a DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00001a          0x4 LONG 0xa38 DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00001c          0x4 LONG 0x194 DEFINED (__IC2Interrupt)?ABSOLUTE (__IC2Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00001e          0x4 LONG 0x194 DEFINED (__OC2Interrupt)?ABSOLUTE (__OC2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000020          0x4 LONG 0xa7c DEFINED (__T2Interrupt)?ABSOLUTE (__T2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000022          0x4 LONG 0xaaa DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000020          0x4 LONG 0xa6a DEFINED (__T2Interrupt)?ABSOLUTE (__T2Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000022          0x4 LONG 0xa98 DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000024          0x4 LONG 0x194 DEFINED (__SPI1Interrupt)?ABSOLUTE (__SPI1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000026          0x4 LONG 0x194 DEFINED (__U1RXInterrupt)?ABSOLUTE (__U1RXInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000028          0x4 LONG 0x194 DEFINED (__U1TXInterrupt)?ABSOLUTE (__U1TXInterrupt):ABSOLUTE (__DefaultInterrupt)
@@ -561,11 +561,11 @@ userdata
                   0x000094          0x4 LONG 0x194 DEFINED (__AltINT0Interrupt)?ABSOLUTE (__AltINT0Interrupt):DEFINED (__INT0Interrupt)?ABSOLUTE (__INT0Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000096          0x4 LONG 0x194 DEFINED (__AltIC1Interrupt)?ABSOLUTE (__AltIC1Interrupt):DEFINED (__IC1Interrupt)?ABSOLUTE (__IC1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000098          0x4 LONG 0x194 DEFINED (__AltOC1Interrupt)?ABSOLUTE (__AltOC1Interrupt):DEFINED (__OC1Interrupt)?ABSOLUTE (__OC1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00009a          0x4 LONG 0xa4a DEFINED (__AltT1Interrupt)?ABSOLUTE (__AltT1Interrupt):DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00009a          0x4 LONG 0xa38 DEFINED (__AltT1Interrupt)?ABSOLUTE (__AltT1Interrupt):DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00009c          0x4 LONG 0x194 DEFINED (__AltIC2Interrupt)?ABSOLUTE (__AltIC2Interrupt):DEFINED (__IC2Interrupt)?ABSOLUTE (__IC2Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00009e          0x4 LONG 0x194 DEFINED (__AltOC2Interrupt)?ABSOLUTE (__AltOC2Interrupt):DEFINED (__OC2Interrupt)?ABSOLUTE (__OC2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000a0          0x4 LONG 0xa7c DEFINED (__AltT2Interrupt)?ABSOLUTE (__AltT2Interrupt):DEFINED (__T2Interrupt)?ABSOLUTE (__T2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000a2          0x4 LONG 0xaaa DEFINED (__AltT3Interrupt)?ABSOLUTE (__AltT3Interrupt):DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000a0          0x4 LONG 0xa6a DEFINED (__AltT2Interrupt)?ABSOLUTE (__AltT2Interrupt):DEFINED (__T2Interrupt)?ABSOLUTE (__T2Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000a2          0x4 LONG 0xa98 DEFINED (__AltT3Interrupt)?ABSOLUTE (__AltT3Interrupt):DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000a4          0x4 LONG 0x194 DEFINED (__AltSPI1Interrupt)?ABSOLUTE (__AltSPI1Interrupt):DEFINED (__SPI1Interrupt)?ABSOLUTE (__SPI1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000a6          0x4 LONG 0x194 DEFINED (__AltU1RXInterrupt)?ABSOLUTE (__AltU1RXInterrupt):DEFINED (__U1RXInterrupt)?ABSOLUTE (__U1RXInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000a8          0x4 LONG 0x194 DEFINED (__AltU1TXInterrupt)?ABSOLUTE (__AltU1TXInterrupt):DEFINED (__U1TXInterrupt)?ABSOLUTE (__U1TXInterrupt):ABSOLUTE (__DefaultInterrupt)
@@ -1704,8 +1704,8 @@ __c30_signature
  .config_FCKSMEN
                   0xf80000          0x2 build/default/debug/main.o
 
-.text             0x00042a        0x764
- .text            0x00042a        0x5f6 build/default/debug/Encoder.o
+.text             0x00042a        0x76e
+ .text            0x00042a        0x5e4 build/default/debug/Encoder.o
                   0x00042a                  _EncForwardDirectionStroke
                   0x00049a                  _EncReverseDirectionStroke
                   0x00050a                  _EncCountV
@@ -1717,21 +1717,21 @@ __c30_signature
                   0x000848                  _EncSpeedControl
                   0x0008a6                  _EncStopControl
                   0x0008dc                  _ExactStopSensors
-                  0x000962                  _EncSlowdownControl
-                  0x0009aa                  _EncStartControl
-                  0x0009d0                  _EncGetDirection
-                  0x0009da                  _TrySetOverRise
- .text            0x000a20         0xd8 build/default/debug/main.o
-                  0x000a20                  _main
-                  0x000a4a                  __T1Interrupt
-                  0x000a7c                  __T2Interrupt
-                  0x000aaa                  __T3Interrupt
- .text            0x000af8         0x72 build/default/debug/Timer.o
-                  0x000af8                  _StartTimer1
-                  0x000b1e                  _StartTimer2
-                  0x000b44                  _StartTimer3
- .text            0x000b6a         0x24 build/default/debug/MainLibrary.o
-                  0x000b6a                  _Delay
+                  0x000950                  _EncSlowdownControl
+                  0x000998                  _EncStartControl
+                  0x0009be                  _EncGetDirection
+                  0x0009c8                  _TrySetOverRise
+ .text            0x000a0e         0xf4 build/default/debug/main.o
+                  0x000a0e                  _main
+                  0x000a38                  __T1Interrupt
+                  0x000a6a                  __T2Interrupt
+                  0x000a98                  __T3Interrupt
+ .text            0x000b02         0x72 build/default/debug/Timer.o
+                  0x000b02                  _StartTimer1
+                  0x000b28                  _StartTimer2
+                  0x000b4e                  _StartTimer3
+ .text            0x000b74         0x24 build/default/debug/MainLibrary.o
+                  0x000b74                  _Delay
 
-.dinit            0x000b8e         0x22
- .dinit           0x000b8e         0x22 data_init
+.dinit            0x000b98         0x22
+ .dinit           0x000b98         0x22 data_init
