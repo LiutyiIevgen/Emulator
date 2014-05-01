@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <xc.h>
 #include "Timer.h"
+#include "Can.h"
 #include "Encoder.h"
 #include "MainLibrary.h"
 #include "Configuration.h"
@@ -55,7 +56,12 @@ void __attribute__((__interrupt__, __auto_psv__)) _T1Interrupt(void);
 void __attribute__((__interrupt__, __auto_psv__)) _T2Interrupt(void);
 // Function prototype for timer 3 ISR
 void __attribute__((__interrupt__, __auto_psv__)) _T3Interrupt(void);
+// Can1 Receive Parameter
+void __attribute__ ((__interrupt__, __auto_psv__)) _C1Interrupt (void);
+
 char startSignal = -1;
+char fReadS = 0;
+
 int main(int argc, char** argv) {
     ADPCFG = 0xFFFF; //RA only digit
     TRISDbits.TRISD8 = 0;//set output on RD8
@@ -73,11 +79,12 @@ int main(int argc, char** argv) {
         //Delay(2000);
         //LATCbits.LATC13 = 1 - LATCbits.LATC13; // RC13 value (LED VD1 => ON)
     //}
+    Can1Initialization();
     InitCounter();
     WriteOutputSignals(1);
-    StartTimer1();
+    /*StartTimer1();
     StartTimer2();
-    StartTimer3();
+    StartTimer3(); */
 
     while(1);
     return (EXIT_SUCCESS);
@@ -129,3 +136,27 @@ void __attribute__((__interrupt__, __auto_psv__)) _T3Interrupt(void)
         T2CONbits.TON = 0;
     }
 }
+
+void __attribute__ ((__interrupt__, __auto_psv__)) _C1Interrupt (void){
+    IFS1bits.C1IF = 0; //Clear CAN1 interrupt flag
+    C1INTFbits.RX0IF = 0; //Clear CAN1 RX interrupt flag
+    C1INTFbits.RX1IF = 0; //Clear CAN1 RX interrupt flag
+    char rxData[8];
+    if(C1CTRLbits.ICODE == 7) //check filters
+    {
+        C1INTFbits.WAKIF = 0;
+        return;
+    }
+    unsigned int sId = C1RX0SIDbits.SID;
+    Can1ReceiveData(rxData);
+    if(fReadS == 0)
+    {
+        ParseTPDO1(sId, rxData);//parse TPDO message
+        StartTimer1();
+        StartTimer2();
+        StartTimer3();
+        fReadS = 1;
+    }
+    C1RX0CONbits.RXFUL = 0;
+    C1RX1CONbits.RXFUL = 0;
+  }

@@ -55,4 +55,5 @@ void EncStartControl();
  */
 unsigned int EncGetDirection();
 void TrySetOverRise();
+void ParseTPDO1(unsigned int, unsigned char*);
 

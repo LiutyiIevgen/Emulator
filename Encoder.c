@@ -13,6 +13,7 @@ unsigned int currentSpeed = 0;
 unsigned int direction = 0;
 unsigned char reverse = 0;
 unsigned int necessarySpeed = SPEED;
+long slowdown_zone = SLOWDOWN_ZONE;
 
 void EncForwardDirectionStroke()
 {
@@ -252,7 +253,7 @@ void ExactStopSensors()
 
 void EncSlowdownControl()
 {
-    long slowdown_zone = 52000;
+    //long slowdown_zone = SLOWDOWN_ZONE;
     long s = EncGetS();
 
     if( (direction == 0 && s <= _lowEdge + slowdown_zone) ||
@@ -285,4 +286,22 @@ void TrySetOverRise()
     }
     else if(EncReadOverZeroSignal() == 0)
         _lowEdge = lowSenPos;
+}
+
+void ParseTPDO1(unsigned int sid, unsigned char* data)
+{
+    if((sid&0x780)!=0x180)//if it's not TPDO1
+        return;
+    long s = 0;
+    long* distance = 0;
+    char buf[4] = {0, data[3], data[4], data[5]};
+    distance = buf;
+    *distance=(*distance)/256;
+    if((sid&0x3) == 0x1)
+        s = *distance;
+    if((sid&0x3) == 0x2)
+        s = *distance;
+    if((sid&0x3) == 0x3)
+        s = *distance;
+    EncoderPositionCounter = s/DISTANCE_PER_MARK;
 }
