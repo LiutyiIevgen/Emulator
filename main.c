@@ -157,6 +157,7 @@ void __attribute__ ((__interrupt__, __auto_psv__)) _C1Interrupt (void){
         StartTimer3();
         fReadS = 1;
     }
+    ParseTPDO3(sId, rxData);
     C1RX0CONbits.RXFUL = 0;
     C1RX1CONbits.RXFUL = 0;
   }

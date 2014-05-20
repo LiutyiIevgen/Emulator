@@ -1,4 +1,4 @@
-Microchip Technology Inc, vz3
+Microchip Technology Inc, vzN
 
 Tool Name:
   c:\program files\microchip\xc16\v1.21\bin\bin\..\bin/elf-ld.exe
@@ -105,19 +105,20 @@ Program Memory  [Origin = 0x100, Length = 0x17efe]
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x100               0x4c4           0x726  (1830)
-.text                        0x5c4               0x934           0xdce  (3534)
-.dinit                       0xef8                0x24            0x36  (54)
+.text                        0x5c4               0xa56           0xf81  (3969)
+.dinit                      0x101a                0x2c            0x42  (66)
+.text                       0x1046                0x24            0x36  (54)
 
-                     Total program memory used (bytes):         0x152a  (5418) 3%
+                     Total program memory used (bytes):         0x171f  (5919) 4%
 
 
 Data Memory  [Origin = 0x800, Length = 0x2000]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-.ndata                       0x800                   0            0x1e  (30)
+.ndata                       0x800                   0            0x2a  (42)
 
-                        Total data memory used (bytes):           0x1e  (30) <1%
+                        Total data memory used (bytes):           0x2a  (42) <1%
 
 
 Dynamic Memory Usage
@@ -125,9 +126,9 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                        0x81e                              0x1fe2  (8162)
+stack                        0x82a                              0x1fd6  (8150)
 
-                        Maximum dynamic memory (bytes):         0x1fe2  (8162)
+                        Maximum dynamic memory (bytes):         0x1fd6  (8150)
 
 
 External Symbols in Data Memory (by address):
@@ -139,24 +140,26 @@ External Symbols in Data Memory (by address):
                     0x080c                  _reverse
                     0x080e                  _necessarySpeed
                     0x0810                  _slowdown_zone
-                    0x0814                  __lowEdge
-                    0x0818                  __highEdge
-                    0x081c                  _startSignal
-                    0x081d                  _fReadS
+                    0x0814                  _prevV
+                    0x0820                  __lowEdge
+                    0x0824                  __highEdge
+                    0x0828                  _startSignal
+                    0x0829                  _fReadS
 
 External Symbols in Data Memory (by name):
 
                     0x0800                  _EncoderPositionCounter
                     0x0804                  _EncoderPrevPositionCounter
-                    0x0818                  __highEdge
-                    0x0814                  __lowEdge
+                    0x0824                  __highEdge
+                    0x0820                  __lowEdge
                     0x0808                  _currentSpeed
                     0x080a                  _direction
-                    0x081d                  _fReadS
+                    0x0829                  _fReadS
                     0x080e                  _necessarySpeed
+                    0x0814                  _prevV
                     0x080c                  _reverse
                     0x0810                  _slowdown_zone
-                    0x081c                  _startSignal
+                    0x0828                  _startSignal
 
 External Symbols in Program Memory (by address):
 
@@ -205,21 +208,24 @@ External Symbols in Program Memory (by address):
                   0x000b50                  _EncGetDirection
                   0x000b5a                  _TrySetOverRise
                   0x000ba0                  _ParseTPDO1
-                  0x000c44                  _main
-                  0x000c6a                  __T1Interrupt
-                  0x000c9c                  __T2Interrupt
-                  0x000cca                  __T3Interrupt
-                  0x000d34                  __C1Interrupt
-                  0x000d98                  _Can1Initialization
-                  0x000e10                  _Can1SendData
-                  0x000e50                  _Can1ReceiveData
-                  0x000e62                  _StartTimer1
-                  0x000e88                  _StartTimer2
-                  0x000eae                  _StartTimer3
-                  0x000ed4                  _Delay
+                  0x000c44                  _ParseTPDO3
+                  0x000cd8                  _AnalyzePrevV
+                  0x000d82                  _main
+                  0x000da8                  __T1Interrupt
+                  0x000dda                  __T2Interrupt
+                  0x000e08                  __T3Interrupt
+                  0x000e72                  __C1Interrupt
+                  0x000ede                  _Can1Initialization
+                  0x000f56                  _Can1SendData
+                  0x000f96                  _Can1ReceiveData
+                  0x000fa8                  _StartTimer1
+                  0x000fce                  _StartTimer2
+                  0x000ff4                  _StartTimer3
+                  0x001046                  _Delay
 
 External Symbols in Program Memory (by name):
 
+                  0x000cd8                  _AnalyzePrevV
                   0x000198                  _CAN1Initialize
                   0x00019e                  _CAN1IsTXReady
                   0x0001c0                  _CAN1ReceiveMessage
@@ -229,11 +235,11 @@ External Symbols in Program Memory (by name):
                   0x0002e0                  _CAN1SetOperationMode
                   0x0002e4                  _CAN1SetRXMode
                   0x0002f4                  _CAN1SetTXMode
-                  0x000d98                  _Can1Initialization
-                  0x000e50                  _Can1ReceiveData
-                  0x000e10                  _Can1SendData
+                  0x000ede                  _Can1Initialization
+                  0x000f96                  _Can1ReceiveData
+                  0x000f56                  _Can1SendData
                   0x00030a                  _ConfigIntCAN1
-                  0x000ed4                  _Delay
+                  0x001046                  _Delay
                   0x0006a4                  _EncCountV
                   0x0005c4                  _EncForwardDirectionStroke
                   0x000b50                  _EncGetDirection
@@ -248,16 +254,17 @@ External Symbols in Program Memory (by name):
                   0x000a76                  _ExactStopSensors
                   0x000712                  _InitCounter
                   0x000ba0                  _ParseTPDO1
-                  0x000e62                  _StartTimer1
-                  0x000e88                  _StartTimer2
-                  0x000eae                  _StartTimer3
+                  0x000c44                  _ParseTPDO3
+                  0x000fa8                  _StartTimer1
+                  0x000fce                  _StartTimer2
+                  0x000ff4                  _StartTimer3
                   0x000b5a                  _TrySetOverRise
                   0x0007b4                  _WriteOutputSignals
-                  0x000d34                  __C1Interrupt
+                  0x000e72                  __C1Interrupt
                   0x000194                  __DefaultInterrupt
-                  0x000c6a                  __T1Interrupt
-                  0x000c9c                  __T2Interrupt
-                  0x000cca                  __T3Interrupt
+                  0x000da8                  __T1Interrupt
+                  0x000dda                  __T2Interrupt
+                  0x000e08                  __T3Interrupt
                   0x000332                  ___divsf3
                   0x0003b6                  ___fixsfsi
                   0x0003f8                  ___fixunssfsi
@@ -276,7 +283,7 @@ External Symbols in Program Memory (by name):
                   0x0004ae                  __funpack2
                   0x000126                  __psv_init
                   0x000100                  __resetPRI
-                  0x000c44                  _main
+                  0x000d82                  _main
 
 Memory Configuration
 
@@ -456,45 +463,45 @@ userdata
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x3169
+.debug_info       0x000000       0x341c
  *(.debug_info)
  .debug_info      0x000000       0x1455 build/default/production/main.o
  .debug_info      0x001455        0xb4d build/default/production/Timer.o
- .debug_info      0x001fa2        0xdd0 build/default/production/Encoder.o
- .debug_info      0x002d72         0xbb build/default/production/MainLibrary.o
- .debug_info      0x002e2d        0x33c build/default/production/Can.o
+ .debug_info      0x001fa2       0x1083 build/default/production/Encoder.o
+ .debug_info      0x003025         0xbb build/default/production/MainLibrary.o
+ .debug_info      0x0030e0        0x33c build/default/production/Can.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000        0x558
+.debug_abbrev     0x000000        0x57e
  *(.debug_abbrev)
  .debug_abbrev    0x000000        0x17b build/default/production/main.o
  .debug_abbrev    0x00017b         0xcb build/default/production/Timer.o
- .debug_abbrev    0x000246        0x1e8 build/default/production/Encoder.o
- .debug_abbrev    0x00042e         0x54 build/default/production/MainLibrary.o
- .debug_abbrev    0x000482         0xd6 build/default/production/Can.o
+ .debug_abbrev    0x000246        0x20e build/default/production/Encoder.o
+ .debug_abbrev    0x000454         0x54 build/default/production/MainLibrary.o
+ .debug_abbrev    0x0004a8         0xd6 build/default/production/Can.o
 
-.debug_line       0x000000        0xea1
+.debug_line       0x000000        0xfb5
  *(.debug_line)
- .debug_line      0x000000        0x2a3 build/default/production/main.o
- .debug_line      0x0002a3        0x17b build/default/production/Timer.o
- .debug_line      0x00041e        0x8bb build/default/production/Encoder.o
- .debug_line      0x000cd9         0x5f build/default/production/MainLibrary.o
- .debug_line      0x000d38        0x169 build/default/production/Can.o
+ .debug_line      0x000000        0x2ab build/default/production/main.o
+ .debug_line      0x0002ab        0x17b build/default/production/Timer.o
+ .debug_line      0x000426        0x9c7 build/default/production/Encoder.o
+ .debug_line      0x000ded         0x5f build/default/production/MainLibrary.o
+ .debug_line      0x000e4c        0x169 build/default/production/Can.o
 
-.debug_frame      0x000000        0x224
+.debug_frame      0x000000        0x244
  *(.debug_frame)
  .debug_frame     0x000000         0x64 build/default/production/main.o
  .debug_frame     0x000064         0x44 build/default/production/Timer.o
- .debug_frame     0x0000a8        0x114 build/default/production/Encoder.o
- .debug_frame     0x0001bc         0x24 build/default/production/MainLibrary.o
- .debug_frame     0x0001e0         0x44 build/default/production/Can.o
+ .debug_frame     0x0000a8        0x134 build/default/production/Encoder.o
+ .debug_frame     0x0001dc         0x24 build/default/production/MainLibrary.o
+ .debug_frame     0x000200         0x44 build/default/production/Can.o
 
-.debug_str        0x000000        0x1bc
+.debug_str        0x000000        0x1de
  *(.debug_str)
  .debug_str       0x000000         0x95 build/default/production/main.o
  .debug_str       0x000095         0x50 build/default/production/Timer.o
- .debug_str       0x0000e5         0xcc build/default/production/Encoder.o
- .debug_str       0x0001b1          0xb build/default/production/Can.o
+ .debug_str       0x0000e5         0xee build/default/production/Encoder.o
+ .debug_str       0x0001d3          0xb build/default/production/Can.o
 
 .debug_loc
  *(.debug_loc)
@@ -503,18 +510,18 @@ userdata
  *(.debug_macinfo)
 
 .debug_pubnames
-                  0x000000        0x328
+                  0x000000        0x352
  *(.debug_pubnames)
  .debug_pubnames
                   0x000000         0x95 build/default/production/main.o
  .debug_pubnames
                   0x000095         0x42 build/default/production/Timer.o
  .debug_pubnames
-                  0x0000d7        0x1e7 build/default/production/Encoder.o
+                  0x0000d7        0x211 build/default/production/Encoder.o
  .debug_pubnames
-                  0x0002be         0x1c build/default/production/MainLibrary.o
+                  0x0002e8         0x1c build/default/production/MainLibrary.o
  .debug_pubnames
-                  0x0002da         0x4e build/default/production/Can.o
+                  0x000304         0x4e build/default/production/Can.o
 
 .debug_ranges
  *(.debug_ranges)
@@ -544,11 +551,11 @@ userdata
                   0x000014          0x4 LONG 0x194 DEFINED (__INT0Interrupt)?ABSOLUTE (__INT0Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000016          0x4 LONG 0x194 DEFINED (__IC1Interrupt)?ABSOLUTE (__IC1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000018          0x4 LONG 0x194 DEFINED (__OC1Interrupt)?ABSOLUTE (__OC1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00001a          0x4 LONG 0xc6a DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00001a          0x4 LONG 0xda8 DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00001c          0x4 LONG 0x194 DEFINED (__IC2Interrupt)?ABSOLUTE (__IC2Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00001e          0x4 LONG 0x194 DEFINED (__OC2Interrupt)?ABSOLUTE (__OC2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000020          0x4 LONG 0xc9c DEFINED (__T2Interrupt)?ABSOLUTE (__T2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000022          0x4 LONG 0xcca DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000020          0x4 LONG 0xdda DEFINED (__T2Interrupt)?ABSOLUTE (__T2Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000022          0x4 LONG 0xe08 DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000024          0x4 LONG 0x194 DEFINED (__SPI1Interrupt)?ABSOLUTE (__SPI1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000026          0x4 LONG 0x194 DEFINED (__U1RXInterrupt)?ABSOLUTE (__U1RXInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000028          0x4 LONG 0x194 DEFINED (__U1TXInterrupt)?ABSOLUTE (__U1TXInterrupt):ABSOLUTE (__DefaultInterrupt)
@@ -568,7 +575,7 @@ userdata
                   0x000044          0x4 LONG 0x194 DEFINED (__U2RXInterrupt)?ABSOLUTE (__U2RXInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000046          0x4 LONG 0x194 DEFINED (__U2TXInterrupt)?ABSOLUTE (__U2TXInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000048          0x4 LONG 0x194 DEFINED (__SPI2Interrupt)?ABSOLUTE (__SPI2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00004a          0x4 LONG 0xd34 DEFINED (__C1Interrupt)?ABSOLUTE (__C1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00004a          0x4 LONG 0xe72 DEFINED (__C1Interrupt)?ABSOLUTE (__C1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00004c          0x4 LONG 0x194 DEFINED (__IC3Interrupt)?ABSOLUTE (__IC3Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00004e          0x4 LONG 0x194 DEFINED (__IC4Interrupt)?ABSOLUTE (__IC4Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000050          0x4 LONG 0x194 DEFINED (__IC5Interrupt)?ABSOLUTE (__IC5Interrupt):ABSOLUTE (__DefaultInterrupt)
@@ -608,11 +615,11 @@ userdata
                   0x000094          0x4 LONG 0x194 DEFINED (__AltINT0Interrupt)?ABSOLUTE (__AltINT0Interrupt):DEFINED (__INT0Interrupt)?ABSOLUTE (__INT0Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000096          0x4 LONG 0x194 DEFINED (__AltIC1Interrupt)?ABSOLUTE (__AltIC1Interrupt):DEFINED (__IC1Interrupt)?ABSOLUTE (__IC1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000098          0x4 LONG 0x194 DEFINED (__AltOC1Interrupt)?ABSOLUTE (__AltOC1Interrupt):DEFINED (__OC1Interrupt)?ABSOLUTE (__OC1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00009a          0x4 LONG 0xc6a DEFINED (__AltT1Interrupt)?ABSOLUTE (__AltT1Interrupt):DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00009a          0x4 LONG 0xda8 DEFINED (__AltT1Interrupt)?ABSOLUTE (__AltT1Interrupt):DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00009c          0x4 LONG 0x194 DEFINED (__AltIC2Interrupt)?ABSOLUTE (__AltIC2Interrupt):DEFINED (__IC2Interrupt)?ABSOLUTE (__IC2Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00009e          0x4 LONG 0x194 DEFINED (__AltOC2Interrupt)?ABSOLUTE (__AltOC2Interrupt):DEFINED (__OC2Interrupt)?ABSOLUTE (__OC2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000a0          0x4 LONG 0xc9c DEFINED (__AltT2Interrupt)?ABSOLUTE (__AltT2Interrupt):DEFINED (__T2Interrupt)?ABSOLUTE (__T2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000a2          0x4 LONG 0xcca DEFINED (__AltT3Interrupt)?ABSOLUTE (__AltT3Interrupt):DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000a0          0x4 LONG 0xdda DEFINED (__AltT2Interrupt)?ABSOLUTE (__AltT2Interrupt):DEFINED (__T2Interrupt)?ABSOLUTE (__T2Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000a2          0x4 LONG 0xe08 DEFINED (__AltT3Interrupt)?ABSOLUTE (__AltT3Interrupt):DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000a4          0x4 LONG 0x194 DEFINED (__AltSPI1Interrupt)?ABSOLUTE (__AltSPI1Interrupt):DEFINED (__SPI1Interrupt)?ABSOLUTE (__SPI1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000a6          0x4 LONG 0x194 DEFINED (__AltU1RXInterrupt)?ABSOLUTE (__AltU1RXInterrupt):DEFINED (__U1RXInterrupt)?ABSOLUTE (__U1RXInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000a8          0x4 LONG 0x194 DEFINED (__AltU1TXInterrupt)?ABSOLUTE (__AltU1TXInterrupt):DEFINED (__U1TXInterrupt)?ABSOLUTE (__U1TXInterrupt):ABSOLUTE (__DefaultInterrupt)
@@ -632,7 +639,7 @@ userdata
                   0x0000c4          0x4 LONG 0x194 DEFINED (__AltU2RXInterrupt)?ABSOLUTE (__AltU2RXInterrupt):DEFINED (__U2RXInterrupt)?ABSOLUTE (__U2RXInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000c6          0x4 LONG 0x194 DEFINED (__AltU2TXInterrupt)?ABSOLUTE (__AltU2TXInterrupt):DEFINED (__U2TXInterrupt)?ABSOLUTE (__U2TXInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000c8          0x4 LONG 0x194 DEFINED (__AltSPI2Interrupt)?ABSOLUTE (__AltSPI2Interrupt):DEFINED (__SPI2Interrupt)?ABSOLUTE (__SPI2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000ca          0x4 LONG 0xd34 DEFINED (__AltC1Interrupt)?ABSOLUTE (__AltC1Interrupt):DEFINED (__C1Interrupt)?ABSOLUTE (__C1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000ca          0x4 LONG 0xe72 DEFINED (__AltC1Interrupt)?ABSOLUTE (__AltC1Interrupt):DEFINED (__C1Interrupt)?ABSOLUTE (__C1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000cc          0x4 LONG 0x194 DEFINED (__AltIC3Interrupt)?ABSOLUTE (__AltIC3Interrupt):DEFINED (__IC3Interrupt)?ABSOLUTE (__IC3Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000ce          0x4 LONG 0x194 DEFINED (__AltIC4Interrupt)?ABSOLUTE (__AltIC4Interrupt):DEFINED (__IC4Interrupt)?ABSOLUTE (__IC4Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000d0          0x4 LONG 0x194 DEFINED (__AltIC5Interrupt)?ABSOLUTE (__AltIC5Interrupt):DEFINED (__IC5Interrupt)?ABSOLUTE (__IC5Interrupt):ABSOLUTE (__DefaultInterrupt)
@@ -1668,79 +1675,79 @@ LOAD default_isr
 LOAD data_init
 
 .debug_pubtypes
-                  0x000078        0x391
+                  0x000078        0x3cf
  .debug_pubtypes
                   0x000078        0x1b3 build/default/production/main.o
  .debug_pubtypes
                   0x00022b         0xe3 build/default/production/Timer.o
  .debug_pubtypes
-                  0x00030e         0xc8 build/default/production/Encoder.o
+                  0x00030e        0x106 build/default/production/Encoder.o
  .debug_pubtypes
-                  0x0003d6         0x33 build/default/production/Can.o
+                  0x000414         0x33 build/default/production/Can.o
 
 __c30_signature
-                  0x00040a         0xae
+                  0x000448         0xae
  __c30_signature
-                  0x00040a          0x6 build/default/production/main.o
+                  0x000448          0x6 build/default/production/main.o
  __c30_signature
-                  0x000410          0x6 build/default/production/Timer.o
+                  0x00044e          0x6 build/default/production/Timer.o
  __c30_signature
-                  0x000416          0x6 build/default/production/Encoder.o
+                  0x000454          0x6 build/default/production/Encoder.o
  __c30_signature
-                  0x00041c          0x6 build/default/production/MainLibrary.o
+                  0x00045a          0x6 build/default/production/MainLibrary.o
  __c30_signature
-                  0x000422          0x6 build/default/production/Can.o
+                  0x000460          0x6 build/default/production/Can.o
  __c30_signature
-                  0x000428          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib/dsPIC30F\libp30F6012A-elf.a(CAN1Initialize.o)
+                  0x000466          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib/dsPIC30F\libp30F6012A-elf.a(CAN1Initialize.o)
  __c30_signature
-                  0x00042e          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib/dsPIC30F\libp30F6012A-elf.a(CAN1IsTXReady.o)
+                  0x00046c          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib/dsPIC30F\libp30F6012A-elf.a(CAN1IsTXReady.o)
  __c30_signature
-                  0x000434          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib/dsPIC30F\libp30F6012A-elf.a(CAN1ReceiveMessage.o)
+                  0x000472          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib/dsPIC30F\libp30F6012A-elf.a(CAN1ReceiveMessage.o)
  __c30_signature
-                  0x00043a          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib/dsPIC30F\libp30F6012A-elf.a(CAN1SendMessage.o)
+                  0x000478          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib/dsPIC30F\libp30F6012A-elf.a(CAN1SendMessage.o)
  __c30_signature
-                  0x000440          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib/dsPIC30F\libp30F6012A-elf.a(CAN1SetFilter.o)
+                  0x00047e          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib/dsPIC30F\libp30F6012A-elf.a(CAN1SetFilter.o)
  __c30_signature
-                  0x000446          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib/dsPIC30F\libp30F6012A-elf.a(CAN1SetMask.o)
+                  0x000484          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib/dsPIC30F\libp30F6012A-elf.a(CAN1SetMask.o)
  __c30_signature
-                  0x00044c          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib/dsPIC30F\libp30F6012A-elf.a(CAN1SetOperationMode.o)
+                  0x00048a          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib/dsPIC30F\libp30F6012A-elf.a(CAN1SetOperationMode.o)
  __c30_signature
-                  0x000452          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib/dsPIC30F\libp30F6012A-elf.a(CAN1SetRXMode.o)
+                  0x000490          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib/dsPIC30F\libp30F6012A-elf.a(CAN1SetRXMode.o)
  __c30_signature
-                  0x000458          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib/dsPIC30F\libp30F6012A-elf.a(CAN1SetTXMode.o)
+                  0x000496          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib/dsPIC30F\libp30F6012A-elf.a(CAN1SetTXMode.o)
  __c30_signature
-                  0x00045e          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib/dsPIC30F\libp30F6012A-elf.a(ConfigIntCAN1.o)
+                  0x00049c          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib/dsPIC30F\libp30F6012A-elf.a(ConfigIntCAN1.o)
  __c30_signature
-                  0x000464          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libpic30-elf.a(crt0_standard.o)
+                  0x0004a2          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libpic30-elf.a(crt0_standard.o)
  __c30_signature
-                  0x00046a          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libpic30-elf.a(data_init_standard.o)
+                  0x0004a8          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libpic30-elf.a(data_init_standard.o)
  __c30_signature
-                  0x000470          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(divsf3.eo)
+                  0x0004ae          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(divsf3.eo)
  __c30_signature
-                  0x000476          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(fixsfsi.eo)
+                  0x0004b4          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(fixsfsi.eo)
  __c30_signature
-                  0x00047c          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(fixunssfsi.eo)
+                  0x0004ba          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(fixunssfsi.eo)
  __c30_signature
-                  0x000482          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(floatsisf.eo)
+                  0x0004c0          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(floatsisf.eo)
  __c30_signature
-                  0x000488          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(floatunsisf.eo)
+                  0x0004c6          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(floatunsisf.eo)
  __c30_signature
-                  0x00048e          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(fpack.eo)
+                  0x0004cc          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(fpack.eo)
  __c30_signature
-                  0x000494          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(funpack.eo)
+                  0x0004d2          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(funpack.eo)
  __c30_signature
-                  0x00049a          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(funpack2.eo)
+                  0x0004d8          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(funpack2.eo)
  __c30_signature
-                  0x0004a0          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(futil.eo)
+                  0x0004de          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(futil.eo)
  __c30_signature
-                  0x0004a6          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(mulsf3.eo)
+                  0x0004e4          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(mulsf3.eo)
  __c30_signature
-                  0x0004ac          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(floatdisf.eo)
+                  0x0004ea          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(floatdisf.eo)
  __c30_signature
-                  0x0004b2          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(floatundisf.eo)
+                  0x0004f0          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(floatundisf.eo)
 
-.ndata              0x0800         0x1e
- .ndata             0x0800         0x14 build/default/production/Encoder.o
+.ndata              0x0800         0x2a
+ .ndata             0x0800         0x20 build/default/production/Encoder.o
                     0x0800                  _EncoderPositionCounter
                     0x0804                  _EncoderPrevPositionCounter
                     0x0808                  _currentSpeed
@@ -1748,11 +1755,12 @@ __c30_signature
                     0x080c                  _reverse
                     0x080e                  _necessarySpeed
                     0x0810                  _slowdown_zone
- .ndata             0x0814          0xa build/default/production/main.o
-                    0x0814                  __lowEdge
-                    0x0818                  __highEdge
-                    0x081c                  _startSignal
-                    0x081d                  _fReadS
+                    0x0814                  _prevV
+ .ndata             0x0820          0xa build/default/production/main.o
+                    0x0820                  __lowEdge
+                    0x0824                  __highEdge
+                    0x0828                  _startSignal
+                    0x0829                  _fReadS
 
 .config_ICS       0xf8000c          0x2
  .config_ICS      0xf8000c          0x2 build/default/production/main.o
@@ -1777,8 +1785,8 @@ __c30_signature
  .config_FCKSMEN
                   0xf80000          0x2 build/default/production/main.o
 
-.text             0x0005c4        0x934
- .text            0x0005c4        0x680 build/default/production/Encoder.o
+.text             0x0005c4        0xa56
+ .text            0x0005c4        0x7be build/default/production/Encoder.o
                   0x0005c4                  _EncForwardDirectionStroke
                   0x000634                  _EncReverseDirectionStroke
                   0x0006a4                  _EncCountV
@@ -1795,22 +1803,26 @@ __c30_signature
                   0x000b50                  _EncGetDirection
                   0x000b5a                  _TrySetOverRise
                   0x000ba0                  _ParseTPDO1
- .text            0x000c44        0x154 build/default/production/main.o
-                  0x000c44                  _main
-                  0x000c6a                  __T1Interrupt
-                  0x000c9c                  __T2Interrupt
-                  0x000cca                  __T3Interrupt
-                  0x000d34                  __C1Interrupt
- .text            0x000d98         0xca build/default/production/Can.o
-                  0x000d98                  _Can1Initialization
-                  0x000e10                  _Can1SendData
-                  0x000e50                  _Can1ReceiveData
- .text            0x000e62         0x72 build/default/production/Timer.o
-                  0x000e62                  _StartTimer1
-                  0x000e88                  _StartTimer2
-                  0x000eae                  _StartTimer3
- .text            0x000ed4         0x24 build/default/production/MainLibrary.o
-                  0x000ed4                  _Delay
+                  0x000c44                  _ParseTPDO3
+                  0x000cd8                  _AnalyzePrevV
+ .text            0x000d82        0x15c build/default/production/main.o
+                  0x000d82                  _main
+                  0x000da8                  __T1Interrupt
+                  0x000dda                  __T2Interrupt
+                  0x000e08                  __T3Interrupt
+                  0x000e72                  __C1Interrupt
+ .text            0x000ede         0xca build/default/production/Can.o
+                  0x000ede                  _Can1Initialization
+                  0x000f56                  _Can1SendData
+                  0x000f96                  _Can1ReceiveData
+ .text            0x000fa8         0x72 build/default/production/Timer.o
+                  0x000fa8                  _StartTimer1
+                  0x000fce                  _StartTimer2
+                  0x000ff4                  _StartTimer3
 
-.dinit            0x000ef8         0x24
- .dinit           0x000ef8         0x24 data_init
+.dinit            0x00101a         0x2c
+ .dinit           0x00101a         0x2c data_init
+
+.text             0x001046         0x24
+ .text            0x001046         0x24 build/default/production/MainLibrary.o
+                  0x001046                  _Delay

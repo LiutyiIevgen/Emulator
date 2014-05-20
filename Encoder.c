@@ -14,6 +14,7 @@ unsigned int direction = 0;
 unsigned char reverse = 0;
 unsigned int necessarySpeed = SPEED;
 long slowdown_zone = SLOWDOWN_ZONE;
+long prevV[3] = {0, 0, 0};
 
 void EncForwardDirectionStroke()
 {
@@ -304,4 +305,48 @@ void ParseTPDO1(unsigned int sid, unsigned char* data)
     if((sid&0x3) == 0x3)
         s = *distance;
     EncoderPositionCounter = s/DISTANCE_PER_MARK;
+}
+
+void ParseTPDO3(unsigned int sid, unsigned char* data)
+{
+    if((sid&0x780)!=0x380)//if it's not TPDO3
+        return;
+    char vio7 = data[4];
+    int f = vio7&0b01000000;
+    if(f > 0)
+    {
+        if((sid&0x3) == 0x1)
+            prevV[0] = 1;
+        if((sid&0x3) == 0x2)
+            prevV[1] = 1;
+        if((sid&0x3) == 0x3)
+            prevV[2] = 1;
+    }
+    else if(f == 0)
+    {
+        if((sid&0x3) == 0x1)
+            prevV[0] = 0;
+        if((sid&0x3) == 0x2)
+            prevV[1] = 0;
+        if((sid&0x3) == 0x3)
+            prevV[2] = 0;
+    }
+    AnalyzePrevV();
+}
+
+void AnalyzePrevV()
+{
+    if((prevV[0] == 1 && prevV[1] == 1)||(prevV[0] == 1 && prevV[2] == 1)||(prevV[1] == 1 && prevV[2] == 1))
+    {
+        T1CONbits.TON = 0;
+        T2CONbits.TON = 0;
+        T3CONbits.TON = 0;
+    }
+    else if((prevV[0] == 0 && prevV[1] == 0)||(prevV[0] == 0 && prevV[2] == 0)||(prevV[1] == 0 && prevV[2] == 0))
+    {
+        //T1CONbits.TON = 1;
+        //T2CONbits.TON = 1;
+        if(T3CONbits.TON == 0)
+            T3CONbits.TON = 1;
+    }
 }
