@@ -2,6 +2,7 @@
 #include "Encoder.h"
 #include "MainLibrary.h"
 #include "Configuration.h"
+#include "ADC.h"
 
 //global vars
 extern long _lowEdge;
@@ -14,7 +15,11 @@ unsigned int direction = 0;
 unsigned char reverse = 0;
 unsigned int necessarySpeed = SPEED;
 long slowdown_zone = SLOWDOWN_ZONE;
+unsigned int dot_speed = DOT_SPEED;
 long prevV[3] = {0, 0, 0};
+int slowdown_state = 0;
+int stop = 0;
+int start = 0;
 
 void EncForwardDirectionStroke()
 {
@@ -167,6 +172,55 @@ unsigned char EncReadOverZeroSignal()
     return start;
 }
 
+unsigned char EncReadHandModeSignal()
+{
+    unsigned char handmode = 0;
+    TRISBbits.TRISB14 = 0;//set output on RB14
+    TRISDbits.TRISD10 = 0;//set output on RD10
+    TRISDbits.TRISD2 = 1;//set input on RD2
+    LATBbits.LATB14 = 0; // OE1
+    LATDbits.LATD10 = 1; // LE3
+    Delay(10);
+    LATBbits.LATB14 = 0; // OE1
+    LATDbits.LATD10 = 0; // LE3
+    Delay(10);
+    if(PORTDbits.RD2 == 0)
+        handmode = 1;
+    else
+        handmode = 0;
+    return handmode;
+}
+
+void EncReadDirectionSignal()
+{
+    if(EncReadHandModeSignal() == 1)
+    {
+        //unsigned int dir = 0;
+        TRISBbits.TRISB14 = 0;//set output on RB14
+        TRISDbits.TRISD10 = 0;//set output on RD10
+        TRISDbits.TRISD3 = 1;//set input on RD3
+        TRISDbits.TRISD4 = 1;//set input on RD4
+        LATBbits.LATB14 = 0; // OE1
+        LATDbits.LATD10 = 1; // LE3
+        Delay(10);
+        LATBbits.LATB14 = 0; // OE1
+        LATDbits.LATD10 = 0; // LE3
+        Delay(10);
+        if(PORTDbits.RD3 == 0 && PORTDbits.RD4 == 1)
+        {
+            direction = 0;
+            stop = 0;
+        }
+        else if(PORTDbits.RD3 == 1 && PORTDbits.RD4 == 0)
+        {
+            direction = 1;
+            stop = 0;
+        }
+        else if(PORTDbits.RD3 == 1 && PORTDbits.RD4 == 1)
+            stop = 1;
+    }
+}
+
 void WriteOutputSignals(int data)
 {
     data = ~data;
@@ -227,7 +281,7 @@ void EncStopControl()
 {
     long s = EncGetS();
 
-    if(direction == 0 && s <= _lowEdge || direction == 1 && s >= _highEdge)
+    if(direction == 0 && s <= _lowEdge || direction == 1 && s >= _highEdge || (stop == 1 && EncReadHandModeSignal() == 1))
     {
         T1CONbits.TON = 0;
         necessarySpeed = 0;
@@ -254,21 +308,23 @@ void ExactStopSensors()
 
 void EncSlowdownControl()
 {
-    //long slowdown_zone = SLOWDOWN_ZONE;
-    long s = EncGetS();
-
-    if( (direction == 0 && s <= _lowEdge + slowdown_zone) ||
-            (direction == 1 && s >= _highEdge - slowdown_zone))
-        necessarySpeed = 400;
-
+    if(EncReadHandModeSignal() == 0)
+    {
+        long s = EncGetS();
+        if((direction == 0 && s <= _lowEdge + slowdown_zone) || (direction == 1 && s >= _highEdge - slowdown_zone))
+            necessarySpeed = 400;
+    }
 }
 
 void EncStartControl()
 {
     if(T1CONbits.TON)
         return;
-    direction = 1 - direction;
-    necessarySpeed = SPEED;
+    if(EncReadHandModeSignal() == 0)
+    {
+        necessarySpeed = SPEED;
+        direction = 1 - direction;
+    }
     Delay(5000000);
     T1CONbits.TON = 1;
 }
@@ -276,6 +332,16 @@ void EncStartControl()
 unsigned int EncGetDirection()
 {
     return direction;
+}
+
+unsigned int EncGetStop()
+{
+    return stop;
+}
+
+unsigned int EncGetStart()
+{
+    return start;
 }
 
 void TrySetOverRise()
@@ -341,12 +407,26 @@ void AnalyzePrevV()
         T1CONbits.TON = 0;
         T2CONbits.TON = 0;
         T3CONbits.TON = 0;
+        currentSpeed = 0;
     }
     else if((prevV[0] == 0 && prevV[1] == 0)||(prevV[0] == 0 && prevV[2] == 0)||(prevV[1] == 0 && prevV[2] == 0))
     {
-        //T1CONbits.TON = 1;
-        //T2CONbits.TON = 1;
         if(T3CONbits.TON == 0)
+        {
+            SetStartSignal(2);
             T3CONbits.TON = 1;
+        }
+    }
+}
+
+void SetSpeedByJoystick()
+{
+    if(EncReadHandModeSignal() == 1)
+    {
+        unsigned int AdcMaximum = ADC_MAXIMUM;
+        unsigned int MaxSpeed = SPEED;
+        unsigned int koef = MaxSpeed/AdcMaximum;
+        unsigned int AdcNumber = GetAnalogSignal(0);
+        necessarySpeed = (AdcNumber*koef);
     }
 }

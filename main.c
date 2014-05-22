@@ -14,6 +14,7 @@
 #include "MainLibrary.h"
 #include "Configuration.h"
 #include "globals.h"
+#include "ADC.h"
 
 // FOSC
 #pragma config FOSFPR = XT_PLL16        // Oscillator (XT w/PLL 16x)
@@ -64,6 +65,7 @@ char fReadS = 0;
 
 int main(int argc, char** argv) {
     ADPCFG = 0xFFFF; //RA only digit
+    InitADC();
     TRISDbits.TRISD8 = 0;//set output on RD8
     TRISDbits.TRISD9 = 0;//set output on RD9
     LATDbits.LATD8 = 0; // LE1
@@ -108,9 +110,10 @@ void __attribute__((__interrupt__, __auto_psv__)) _T2Interrupt(void)
     EncStartControl();
     EncSpeedControl();
     ExactStopSensors();
+    EncReadDirectionSignal();
     EncStopControl();
     EncSlowdownControl();
-
+    SetSpeedByJoystick();
 }
 
 void __attribute__((__interrupt__, __auto_psv__)) _T3Interrupt(void)
@@ -122,19 +125,21 @@ void __attribute__((__interrupt__, __auto_psv__)) _T3Interrupt(void)
     char signal1 = EncReadStartSignal();
     char signal2 = EncReadStartSignal();
     signal = signal1==1||signal2==1 ? 1:0;
+    /*if(EncGetStart() == 1)
+        startSignal = 2; */
     if(startSignal==signal)
             return;
-    startSignal = signal;
-    if(startSignal)
-    {
-        T1CONbits.TON = 1;
-        T2CONbits.TON = 1;
-    }
-    else
-    {
-        T1CONbits.TON = 0;
-        T2CONbits.TON = 0;
-    }
+        startSignal = signal;
+        if(startSignal == 1)
+        {
+            T1CONbits.TON = 1;
+            T2CONbits.TON = 1;
+        }
+        else if(startSignal == 0)
+        {
+            T1CONbits.TON = 0;
+            T2CONbits.TON = 0;
+        }
 }
 
 void __attribute__ ((__interrupt__, __auto_psv__)) _C1Interrupt (void){
@@ -152,6 +157,7 @@ void __attribute__ ((__interrupt__, __auto_psv__)) _C1Interrupt (void){
     if(fReadS == 0)
     {
         ParseTPDO1(sId, rxData);//parse TPDO message
+        ExactStopSensors();
         StartTimer1();
         StartTimer2();
         StartTimer3();
@@ -161,3 +167,8 @@ void __attribute__ ((__interrupt__, __auto_psv__)) _C1Interrupt (void){
     C1RX0CONbits.RXFUL = 0;
     C1RX1CONbits.RXFUL = 0;
   }
+
+void SetStartSignal(char value)
+{
+    startSignal = value;
+}

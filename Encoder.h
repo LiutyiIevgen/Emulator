@@ -30,6 +30,13 @@ unsigned char EncReadStartSignal();
 unsigned char EncReadOverZeroSignal();
 /**
  * @author Liutyi Ievgen
+ * @return HandMode switch state
+ * @todo read a state of HandMode switch
+ */
+unsigned char EncReadHandModeSignal();
+void EncReadDirectionSignal();
+/**
+ * @author Liutyi Ievgen
  * @todo change speed to necessary meaning
  */
 void EncSpeedControl();
@@ -54,8 +61,11 @@ void EncStartControl();
  * @todo get a diretction of movement
  */
 unsigned int EncGetDirection();
+unsigned int EncGetStop();
+unsigned int EncGetStart();
 void TrySetOverRise();
 void ParseTPDO1(unsigned int, unsigned char*);
 void ParseTPDO3(unsigned int, unsigned char*);
 void AnalyzePrevV();
+void SetSpeedByJoystick();
 

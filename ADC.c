@@ -4,7 +4,7 @@
 void InitADC()
 {
   TRISB  = 0xFFFF;          //Port B is input
-  ADPCFG = 0xFFE0;          //10th channel is sampled and coverted
+  ADPCFG = 0xC1FF;          //10th channel is sampled and coverted
   ADCON1 = 0;               //ADC off, output_format=INTEGER
                             //Manual start of convesion
                             //Manual start of sampling
@@ -16,7 +16,7 @@ void InitADC()
 
 unsigned char GetAnalogSignal(unsigned char num)
 {
-  ADCHS  = 0x0000 + num;
+  ADCHS  = 0x0009 + num;
   ADCON1bits.ADON = 1;           //ADC on
   int rez = 0;
   int i;

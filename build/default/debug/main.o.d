@@ -5,4 +5,5 @@ Can.h  \
 Encoder.h  \
 MainLibrary.h  \
  Configuration.h  \
-globals.h 
+globals.h  \
+ADC.h 
