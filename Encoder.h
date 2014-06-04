@@ -34,7 +34,18 @@ unsigned char EncReadOverZeroSignal();
  * @todo read a state of HandMode switch
  */
 unsigned char EncReadHandModeSignal();
+/**
+ * @author Liutyi Ievgen
+ * @return Direction switch state
+ * @todo read a state of Direction switch
+ */
 void EncReadDirectionSignal();
+/**
+ * @author Liutyi Ievgen
+ * @return Pusk switch state
+ * @todo read a state of Pusk switch
+ */
+unsigned char EncReadPuskSignal();
 /**
  * @author Liutyi Ievgen
  * @todo change speed to necessary meaning

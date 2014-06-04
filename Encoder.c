@@ -221,6 +221,25 @@ void EncReadDirectionSignal()
     }
 }
 
+unsigned char EncReadPuskSignal()
+{
+    unsigned char pusk = 0;
+    TRISBbits.TRISB14 = 0;//set output on RB14
+    TRISDbits.TRISD10 = 0;//set output on RD10
+    TRISDbits.TRISD5 = 1;//set input on RD5
+    LATBbits.LATB14 = 0; // OE1
+    LATDbits.LATD10 = 1; // LE3
+    Delay(10);
+    LATBbits.LATB14 = 0; // OE1
+    LATDbits.LATD10 = 0; // LE3
+    Delay(10);
+    if(PORTDbits.RD5 == 0)
+        pusk = 1;
+    else
+        pusk = 0;
+    return pusk;
+}
+
 void WriteOutputSignals(int data)
 {
     data = ~data;
@@ -320,13 +339,17 @@ void EncStartControl()
 {
     if(T1CONbits.TON)
         return;
-    if(EncReadHandModeSignal() == 0)
+    if(EncReadPuskSignal() == 1)
     {
-        necessarySpeed = SPEED;
-        direction = 1 - direction;
+        if(EncReadHandModeSignal() == 0)
+        {
+            necessarySpeed = SPEED;
+            direction = 1 - direction;
+        }
+        //Delay(5000000);
+        Delay(100000);
+        T1CONbits.TON = 1;
     }
-    Delay(5000000);
-    T1CONbits.TON = 1;
 }
 
 unsigned int EncGetDirection()
