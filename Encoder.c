@@ -339,13 +339,18 @@ void EncStartControl()
 {
     if(T1CONbits.TON)
         return;
-    if(EncReadPuskSignal() == 1)
+    if(EncReadHandModeSignal() == 1 && stop == 0)
     {
-        if(EncReadHandModeSignal() == 0)
-        {
+        Delay(100000);
+        T1CONbits.TON = 1;
+    }
+    else if(EncReadPuskSignal() == 1)
+    {
+        //if(EncReadHandModeSignal() == 0)
+        //{
             necessarySpeed = SPEED;
             direction = 1 - direction;
-        }
+        //}
         //Delay(5000000);
         Delay(100000);
         T1CONbits.TON = 1;

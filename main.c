@@ -120,13 +120,13 @@ void __attribute__((__interrupt__, __auto_psv__)) _T3Interrupt(void)
 {
     _T3IF = 0;
     TrySetOverRise();
-    //char signal = EncReadStartSignal();
     char signal;
-    char signal1 = EncReadStartSignal();
-    char signal2 = EncReadStartSignal();
-    signal = signal1==1||signal2==1 ? 1:0;
+    ////char signal1 = EncReadStartSignal();
+    ////char signal2 = EncReadStartSignal();
+    ////signal = signal1==1||signal2==1 ? 1:0;
     /*if(EncGetStart() == 1)
         startSignal = 2; */
+    signal = 1;
     if(startSignal==signal)
             return;
         startSignal = signal;
