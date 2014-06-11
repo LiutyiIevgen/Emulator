@@ -14,3 +14,4 @@
 #define SPEED_INCREASE 8; // 0.8 m/sec
 #define SLOWDOWN_ZONE 75000; //mm
 #define ADC_MAXIMUM 255;
+#define REVISION_SPEED 2000;// mm/sec

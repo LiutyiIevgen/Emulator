@@ -20,6 +20,9 @@ long prevV[3] = {0, 0, 0};
 int slowdown_state = 0;
 int stop = 0;
 int start = 0;
+char regim1 = 0;
+char regim2 = 0;
+
 
 void EncForwardDirectionStroke()
 {
@@ -375,12 +378,25 @@ unsigned int EncGetStart()
 void TrySetOverRise()
 {
     long lowSenPos = LOW_SEN_POS;
-    if(EncReadOverZeroSignal() == 1 && (_lowEdge > lowSenPos - 1000))
+    long highSenPos = HIGH_SEN_POS;
+    /*if(EncReadOverZeroSignal() == 1 && (_lowEdge > lowSenPos - 1000))
     {
         _lowEdge -= 1000;
     }
     else if(EncReadOverZeroSignal() == 0)
+        _lowEdge = lowSenPos; */
+    if((regim1 == 0 && regim2 == 0) && (_lowEdge > lowSenPos - 1000))
+    {
+        _lowEdge -= 1000;
+    }
+    else if (regim1 != 0 || regim2 != 0)
         _lowEdge = lowSenPos;
+    if((regim1 == 0 && regim2 == 0) && (_highEdge < highSenPos + 1000))
+    {
+        _highEdge += 1000;
+    }
+    else if (regim1 != 0 || regim2 != 0)
+        _highEdge = highSenPos;
 }
 
 void ParseTPDO1(unsigned int sid, unsigned char* data)
@@ -405,7 +421,10 @@ void ParseTPDO3(unsigned int sid, unsigned char* data)
 {
     if((sid&0x780)!=0x380)//if it's not TPDO3
         return;
+    char vio0 = ~data[0];
     char vio7 = data[4];
+    regim1 = vio0&0x8;
+    regim2 = vio0&0x10;
     int f = vio7&0b01000000;
     if(f > 0)
     {
@@ -453,6 +472,8 @@ void SetSpeedByJoystick()
     {
         unsigned int AdcMaximum = ADC_MAXIMUM;
         unsigned int MaxSpeed = SPEED;
+        if(regim1 == 0 && regim2 == 0)
+            MaxSpeed = REVISION_SPEED;
         unsigned int koef = MaxSpeed/AdcMaximum;
         unsigned int AdcNumber = GetAnalogSignal(0);
         necessarySpeed = (AdcNumber*koef);
