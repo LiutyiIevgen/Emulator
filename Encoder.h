@@ -79,4 +79,5 @@ void ParseTPDO1(unsigned int, unsigned char*);
 void ParseTPDO3(unsigned int, unsigned char*);
 void AnalyzePrevV();
 void SetSpeedByJoystick();
+void SetStartDirection();
 

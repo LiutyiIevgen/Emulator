@@ -479,3 +479,13 @@ void SetSpeedByJoystick()
         necessarySpeed = (AdcNumber*koef);
     }
 }
+
+void SetStartDirection()
+{
+    if(EncReadHandModeSignal() == 0)
+    {
+        long s = EncGetS();
+        if(s <= _lowEdge + 1000)
+            direction = 1;
+    }
+}

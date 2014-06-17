@@ -62,6 +62,7 @@ void __attribute__ ((__interrupt__, __auto_psv__)) _C1Interrupt (void);
 
 char startSignal = -1;
 char fReadS = 0;
+char interCount = 0;
 
 int main(int argc, char** argv) {
     ADPCFG = 0xFFFF; //RA only digit
@@ -154,14 +155,19 @@ void __attribute__ ((__interrupt__, __auto_psv__)) _C1Interrupt (void){
     }
     unsigned int sId = C1RX0SIDbits.SID;
     Can1ReceiveData(rxData);
-    if(fReadS == 0)
+    if(fReadS == 0 && interCount == 10)
     {
-        ParseTPDO1(sId, rxData);//parse TPDO message
         ExactStopSensors();
+        SetStartDirection();
         StartTimer1();
         StartTimer2();
         StartTimer3();
         fReadS = 1;
+    }
+    if(interCount < 10)
+    {
+        ParseTPDO1(sId, rxData);//parse TPDO message
+        interCount++;
     }
     ParseTPDO3(sId, rxData);
     C1RX0CONbits.RXFUL = 0;
