@@ -22,6 +22,7 @@ int stop = 0;
 int start = 0;
 char regim1 = 0;
 char regim2 = 0;
+int wasExactStop = 0;
 
 
 void EncForwardDirectionStroke()
@@ -224,6 +225,23 @@ void EncReadDirectionSignal()
     }
 }
 
+unsigned char EncIsDirectionChosen()
+{
+        TRISBbits.TRISB14 = 0;//set output on RB14
+        TRISDbits.TRISD10 = 0;//set output on RD10
+        TRISDbits.TRISD3 = 1;//set input on RD3
+        TRISDbits.TRISD4 = 1;//set input on RD4
+        LATBbits.LATB14 = 0; // OE1
+        LATDbits.LATD10 = 1; // LE3
+        Delay(10);
+        LATBbits.LATB14 = 0; // OE1
+        LATDbits.LATD10 = 0; // LE3
+        Delay(10);
+        if(PORTDbits.RD3 == 1 && PORTDbits.RD4 == 1)
+            return 0;
+        return 1;
+}
+
 unsigned char EncReadPuskSignal()
 {
     unsigned char pusk = 0;
@@ -303,7 +321,13 @@ void EncStopControl()
 {
     long s = EncGetS();
 
-    if(direction == 0 && s <= _lowEdge || direction == 1 && s >= _highEdge || (stop == 1 && EncReadHandModeSignal() == 1))
+    if((direction == 0 && s <= _lowEdge) || (direction == 1 && s >= _highEdge))
+    {
+        T1CONbits.TON = 0;
+        necessarySpeed = 0;
+        wasExactStop = 1;
+    }
+    if((stop == 1 && EncReadHandModeSignal() == 1) || (EncIsDirectionChosen() == 0 && EncReadHandModeSignal() == 0))
     {
         T1CONbits.TON = 0;
         necessarySpeed = 0;
@@ -346,17 +370,20 @@ void EncStartControl()
     {
         Delay(100000);
         T1CONbits.TON = 1;
+       // T2CONbits.TON = 1;
     }
-    else if(EncReadPuskSignal() == 1)
+    else if(EncReadHandModeSignal() == 0 && EncIsDirectionChosen() == 1) //if(EncReadPuskSignal() == 1)
     {
-        //if(EncReadHandModeSignal() == 0)
-        //{
-            necessarySpeed = SPEED;
+        necessarySpeed = SPEED;
+        if(wasExactStop == 1)
+        {
             direction = 1 - direction;
-        //}
-        //Delay(5000000);
+            wasExactStop = 0;
+        }
         Delay(100000);
         T1CONbits.TON = 1;
+        //if(T2CONbits.TON == 0)
+            //T2CONbits.TON = 1;
     }
 }
 

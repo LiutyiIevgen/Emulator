@@ -1,4 +1,4 @@
-Microchip Technology Inc, v¿ÇV
+Microchip Technology Inc, v¿Çl
 
 Tool Name:
   c:\program files\microchip\xc16\v1.21\bin\bin\..\bin/elf-ld.exe
@@ -27,10 +27,10 @@ Command:
   build/default/debug/MainLibrary.o \
   build/default/debug/Can.o \
   build/default/debug/ADC.o \
-  -TC:\Users\Jeka\AppData\Local\Temp\tmp00002848.00 \
-  -TC:\Users\Jeka\AppData\Local\Temp\tmp00002848.01 \
-  -TC:\Users\Jeka\AppData\Local\Temp\tmp00002848.02 \
-  -TC:\Users\Jeka\AppData\Local\Temp\tmp00002848.03 \
+  -TC:\Users\Jeka\AppData\Local\Temp\tmp000022bc.00 \
+  -TC:\Users\Jeka\AppData\Local\Temp\tmp000022bc.01 \
+  -TC:\Users\Jeka\AppData\Local\Temp\tmp000022bc.02 \
+  -TC:\Users\Jeka\AppData\Local\Temp\tmp000022bc.03 \
   --defsym=__MPLAB_BUILD=1 \
   --defsym=__MPLAB_DEBUG=1 \
   --defsym=__DEBUG=1 \
@@ -113,11 +113,11 @@ Program Memory  [Origin = 0x100, Length = 0x17efe]
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x100               0x4c4           0x726  (1830)
-.text                        0x5c4               0xcf0          0x1368  (4968)
-.dinit                      0x12b4                0x32            0x4b  (75)
-.text                       0x12e6                0x24            0x36  (54)
+.text                        0x5c4               0xd6c          0x1422  (5154)
+.dinit                      0x1330                0x32            0x4b  (75)
+.text                       0x1362                0x24            0x36  (54)
 
-                     Total program memory used (bytes):         0x1b0f  (6927) 4%
+                     Total program memory used (bytes):         0x1bc9  (7113) 4%
 
 
 Data Memory  [Origin = 0x800, Length = 0x2000]
@@ -128,9 +128,9 @@ reserve_data_0x800           0x800                0x1f            0x20  (32)
 reserve_data_0x820           0x820                 0x1             0x2  (2)
 reserve_data_0x822           0x822                 0x1             0x2  (2)
 reserve_data_0x824           0x824                0x2b            0x2c  (44)
-.ndata                       0x850                   0            0x34  (52)
+.ndata                       0x850                   0            0x36  (54)
 
-                        Total data memory used (bytes):           0x84  (132) 1%
+                        Total data memory used (bytes):           0x86  (134) 1%
 
 
 Dynamic Memory Usage
@@ -138,9 +138,9 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                        0x884                              0x1f7c  (8060)
+stack                        0x886                              0x1f7a  (8058)
 
-                        Maximum dynamic memory (bytes):         0x1f7c  (8060)
+                        Maximum dynamic memory (bytes):         0x1f7a  (8058)
 
 
 External Symbols in Data Memory (by address):
@@ -163,6 +163,7 @@ External Symbols in Data Memory (by address):
                     0x087e                  __highEdge
                     0x0882                  _startSignal
                     0x0883                  _fReadS
+                    0x0884                  _interCount
 
 External Symbols in Data Memory (by name):
 
@@ -174,6 +175,7 @@ External Symbols in Data Memory (by name):
                     0x085a                  _direction
                     0x0864                  _dot_speed
                     0x0883                  _fReadS
+                    0x0884                  _interCount
                     0x085e                  _necessarySpeed
                     0x0866                  _prevV
                     0x0878                  _regim1
@@ -225,41 +227,42 @@ External Symbols in Program Memory (by address):
                   0x00077a                  _EncReadOverZeroSignal
                   0x0007b4                  _EncReadHandModeSignal
                   0x0007ee                  _EncReadDirectionSignal
-                  0x000860                  _EncReadPuskSignal
-                  0x00089c                  _WriteOutputSignals
-                  0x000aca                  _EncSpeedControl
-                  0x000b28                  _EncStopControl
-                  0x000b6c                  _ExactStopSensors
-                  0x000be0                  _EncSlowdownControl
-                  0x000c28                  _EncStartControl
-                  0x000c6e                  _EncGetDirection
-                  0x000c78                  _EncGetStop
-                  0x000c82                  _EncGetStart
-                  0x000c8c                  _TrySetOverRise
-                  0x000d34                  _ParseTPDO1
-                  0x000dd8                  _ParseTPDO3
-                  0x000e84                  _AnalyzePrevV
-                  0x000f36                  _SetSpeedByJoystick
-                  0x000f80                  _SetStartDirection
-                  0x000fb8                  _main
-                  0x000fe0                  __T1Interrupt
-                  0x001012                  __T2Interrupt
-                  0x001044                  __T3Interrupt
-                  0x001098                  __C1Interrupt
-                  0x001108                  _SetStartSignal
-                  0x001114                  _Can1Initialization
-                  0x00118c                  _Can1SendData
-                  0x0011cc                  _Can1ReceiveData
-                  0x0011de                  _StartTimer1
-                  0x001204                  _StartTimer2
-                  0x00122a                  _StartTimer3
-                  0x001250                  _InitADC
-                  0x001272                  _GetAnalogSignal
-                  0x0012e6                  _Delay
+                  0x000860                  _EncIsDirectionChosen
+                  0x00089a                  _EncReadPuskSignal
+                  0x0008d6                  _WriteOutputSignals
+                  0x000b04                  _EncSpeedControl
+                  0x000b62                  _EncStopControl
+                  0x000bac                  _ExactStopSensors
+                  0x000c30                  _EncSlowdownControl
+                  0x000c78                  _EncStartControl
+                  0x000cb6                  _EncGetDirection
+                  0x000cc0                  _EncGetStop
+                  0x000cca                  _EncGetStart
+                  0x000cd4                  _TrySetOverRise
+                  0x000d7c                  _ParseTPDO1
+                  0x000e20                  _ParseTPDO3
+                  0x000ecc                  _AnalyzePrevV
+                  0x000f7e                  _SetSpeedByJoystick
+                  0x000fd6                  _SetStartDirection
+                  0x000ffc                  _main
+                  0x001024                  __T1Interrupt
+                  0x001056                  __T2Interrupt
+                  0x001088                  __T3Interrupt
+                  0x0010fa                  __C1Interrupt
+                  0x001184                  _SetStartSignal
+                  0x001190                  _Can1Initialization
+                  0x001208                  _Can1SendData
+                  0x001248                  _Can1ReceiveData
+                  0x00125a                  _StartTimer1
+                  0x001280                  _StartTimer2
+                  0x0012a6                  _StartTimer3
+                  0x0012cc                  _InitADC
+                  0x0012ee                  _GetAnalogSignal
+                  0x001362                  _Delay
 
 External Symbols in Program Memory (by name):
 
-                  0x000e84                  _AnalyzePrevV
+                  0x000ecc                  _AnalyzePrevV
                   0x000198                  _CAN1Initialize
                   0x00019e                  _CAN1IsTXReady
                   0x0001c0                  _CAN1ReceiveMessage
@@ -269,46 +272,47 @@ External Symbols in Program Memory (by name):
                   0x0002e0                  _CAN1SetOperationMode
                   0x0002e4                  _CAN1SetRXMode
                   0x0002f4                  _CAN1SetTXMode
-                  0x001114                  _Can1Initialization
-                  0x0011cc                  _Can1ReceiveData
-                  0x00118c                  _Can1SendData
+                  0x001190                  _Can1Initialization
+                  0x001248                  _Can1ReceiveData
+                  0x001208                  _Can1SendData
                   0x00030a                  _ConfigIntCAN1
-                  0x0012e6                  _Delay
+                  0x001362                  _Delay
                   0x0006a4                  _EncCountV
                   0x0005c4                  _EncForwardDirectionStroke
-                  0x000c6e                  _EncGetDirection
+                  0x000cb6                  _EncGetDirection
                   0x0006f0                  _EncGetS
-                  0x000c82                  _EncGetStart
-                  0x000c78                  _EncGetStop
+                  0x000cca                  _EncGetStart
+                  0x000cc0                  _EncGetStop
+                  0x000860                  _EncIsDirectionChosen
                   0x0007ee                  _EncReadDirectionSignal
                   0x0007b4                  _EncReadHandModeSignal
                   0x00077a                  _EncReadOverZeroSignal
-                  0x000860                  _EncReadPuskSignal
+                  0x00089a                  _EncReadPuskSignal
                   0x000740                  _EncReadStartSignal
                   0x000634                  _EncReverseDirectionStroke
-                  0x000be0                  _EncSlowdownControl
-                  0x000aca                  _EncSpeedControl
-                  0x000c28                  _EncStartControl
-                  0x000b28                  _EncStopControl
-                  0x000b6c                  _ExactStopSensors
-                  0x001272                  _GetAnalogSignal
-                  0x001250                  _InitADC
+                  0x000c30                  _EncSlowdownControl
+                  0x000b04                  _EncSpeedControl
+                  0x000c78                  _EncStartControl
+                  0x000b62                  _EncStopControl
+                  0x000bac                  _ExactStopSensors
+                  0x0012ee                  _GetAnalogSignal
+                  0x0012cc                  _InitADC
                   0x000712                  _InitCounter
-                  0x000d34                  _ParseTPDO1
-                  0x000dd8                  _ParseTPDO3
-                  0x000f36                  _SetSpeedByJoystick
-                  0x000f80                  _SetStartDirection
-                  0x001108                  _SetStartSignal
-                  0x0011de                  _StartTimer1
-                  0x001204                  _StartTimer2
-                  0x00122a                  _StartTimer3
-                  0x000c8c                  _TrySetOverRise
-                  0x00089c                  _WriteOutputSignals
-                  0x001098                  __C1Interrupt
+                  0x000d7c                  _ParseTPDO1
+                  0x000e20                  _ParseTPDO3
+                  0x000f7e                  _SetSpeedByJoystick
+                  0x000fd6                  _SetStartDirection
+                  0x001184                  _SetStartSignal
+                  0x00125a                  _StartTimer1
+                  0x001280                  _StartTimer2
+                  0x0012a6                  _StartTimer3
+                  0x000cd4                  _TrySetOverRise
+                  0x0008d6                  _WriteOutputSignals
+                  0x0010fa                  __C1Interrupt
                   0x000194                  __DefaultInterrupt
-                  0x000fe0                  __T1Interrupt
-                  0x001012                  __T2Interrupt
-                  0x001044                  __T3Interrupt
+                  0x001024                  __T1Interrupt
+                  0x001056                  __T2Interrupt
+                  0x001088                  __T3Interrupt
                   0x000332                  ___divsf3
                   0x0003b6                  ___fixsfsi
                   0x0003f8                  ___fixunssfsi
@@ -327,7 +331,7 @@ External Symbols in Program Memory (by name):
                   0x0004ae                  __funpack2
                   0x000126                  __psv_init
                   0x000100                  __resetPRI
-                  0x000fb8                  _main
+                  0x000ffc                  _main
 
 Memory Configuration
 
@@ -535,50 +539,50 @@ userdata
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x3a69
+.debug_info       0x000000       0x3ad5
  *(.debug_info)
- .debug_info      0x000000       0x1470 build/default/debug/main.o
- .debug_info      0x001470        0xb4d build/default/debug/Timer.o
- .debug_info      0x001fbd       0x133c build/default/debug/Encoder.o
- .debug_info      0x0032f9         0xbb build/default/debug/MainLibrary.o
- .debug_info      0x0033b4        0x33c build/default/debug/Can.o
- .debug_info      0x0036f0        0x379 build/default/debug/ADC.o
+ .debug_info      0x000000       0x14b3 build/default/debug/main.o
+ .debug_info      0x0014b3        0xb4d build/default/debug/Timer.o
+ .debug_info      0x002000       0x1365 build/default/debug/Encoder.o
+ .debug_info      0x003365         0xbb build/default/debug/MainLibrary.o
+ .debug_info      0x003420        0x33c build/default/debug/Can.o
+ .debug_info      0x00375c        0x379 build/default/debug/ADC.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000        0x6c6
+.debug_abbrev     0x000000        0x6a0
  *(.debug_abbrev)
  .debug_abbrev    0x000000        0x195 build/default/debug/main.o
  .debug_abbrev    0x000195         0xcb build/default/debug/Timer.o
- .debug_abbrev    0x000260        0x24f build/default/debug/Encoder.o
- .debug_abbrev    0x0004af         0x54 build/default/debug/MainLibrary.o
- .debug_abbrev    0x000503         0xd6 build/default/debug/Can.o
- .debug_abbrev    0x0005d9         0xed build/default/debug/ADC.o
+ .debug_abbrev    0x000260        0x229 build/default/debug/Encoder.o
+ .debug_abbrev    0x000489         0x54 build/default/debug/MainLibrary.o
+ .debug_abbrev    0x0004dd         0xd6 build/default/debug/Can.o
+ .debug_abbrev    0x0005b3         0xed build/default/debug/ADC.o
 
-.debug_line       0x000000       0x144b
+.debug_line       0x000000       0x1510
  *(.debug_line)
- .debug_line      0x000000        0x2ed build/default/debug/main.o
- .debug_line      0x0002ed        0x17b build/default/debug/Timer.o
- .debug_line      0x000468        0xcdc build/default/debug/Encoder.o
- .debug_line      0x001144         0x5f build/default/debug/MainLibrary.o
- .debug_line      0x0011a3        0x169 build/default/debug/Can.o
- .debug_line      0x00130c        0x13f build/default/debug/ADC.o
+ .debug_line      0x000000        0x30d build/default/debug/main.o
+ .debug_line      0x00030d        0x17b build/default/debug/Timer.o
+ .debug_line      0x000488        0xd81 build/default/debug/Encoder.o
+ .debug_line      0x001209         0x5f build/default/debug/MainLibrary.o
+ .debug_line      0x001268        0x169 build/default/debug/Can.o
+ .debug_line      0x0013d1        0x13f build/default/debug/ADC.o
 
-.debug_frame      0x000000        0x2f8
+.debug_frame      0x000000        0x308
  *(.debug_frame)
  .debug_frame     0x000000         0x74 build/default/debug/main.o
  .debug_frame     0x000074         0x44 build/default/debug/Timer.o
- .debug_frame     0x0000b8        0x1a4 build/default/debug/Encoder.o
- .debug_frame     0x00025c         0x24 build/default/debug/MainLibrary.o
- .debug_frame     0x000280         0x44 build/default/debug/Can.o
- .debug_frame     0x0002c4         0x34 build/default/debug/ADC.o
+ .debug_frame     0x0000b8        0x1b4 build/default/debug/Encoder.o
+ .debug_frame     0x00026c         0x24 build/default/debug/MainLibrary.o
+ .debug_frame     0x000290         0x44 build/default/debug/Can.o
+ .debug_frame     0x0002d4         0x34 build/default/debug/ADC.o
 
-.debug_str        0x000000        0x200
+.debug_str        0x000000        0x20b
  *(.debug_str)
- .debug_str       0x000000         0xa6 build/default/debug/main.o
- .debug_str       0x0000a6         0x50 build/default/debug/Timer.o
- .debug_str       0x0000f6         0xf4 build/default/debug/Encoder.o
- .debug_str       0x0001ea          0xb build/default/debug/Can.o
- .debug_str       0x0001f5          0xb build/default/debug/ADC.o
+ .debug_str       0x000000         0xb1 build/default/debug/main.o
+ .debug_str       0x0000b1         0x50 build/default/debug/Timer.o
+ .debug_str       0x000101         0xf4 build/default/debug/Encoder.o
+ .debug_str       0x0001f5          0xb build/default/debug/Can.o
+ .debug_str       0x000200          0xb build/default/debug/ADC.o
 
 .debug_loc
  *(.debug_loc)
@@ -587,20 +591,20 @@ userdata
  *(.debug_macinfo)
 
 .debug_pubnames
-                  0x000000        0x478
+                  0x000000        0x4a0
  *(.debug_pubnames)
  .debug_pubnames
-                  0x000000         0xa8 build/default/debug/main.o
+                  0x000000         0xb7 build/default/debug/main.o
  .debug_pubnames
-                  0x0000a8         0x42 build/default/debug/Timer.o
+                  0x0000b7         0x42 build/default/debug/Timer.o
  .debug_pubnames
-                  0x0000ea        0x2f2 build/default/debug/Encoder.o
+                  0x0000f9        0x30b build/default/debug/Encoder.o
  .debug_pubnames
-                  0x0003dc         0x1c build/default/debug/MainLibrary.o
+                  0x000404         0x1c build/default/debug/MainLibrary.o
  .debug_pubnames
-                  0x0003f8         0x4e build/default/debug/Can.o
+                  0x000420         0x4e build/default/debug/Can.o
  .debug_pubnames
-                  0x000446         0x32 build/default/debug/ADC.o
+                  0x00046e         0x32 build/default/debug/ADC.o
 
 .debug_ranges
  *(.debug_ranges)
@@ -632,11 +636,11 @@ userdata
                   0x000014          0x4 LONG 0x194 DEFINED (__INT0Interrupt)?ABSOLUTE (__INT0Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000016          0x4 LONG 0x194 DEFINED (__IC1Interrupt)?ABSOLUTE (__IC1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000018          0x4 LONG 0x194 DEFINED (__OC1Interrupt)?ABSOLUTE (__OC1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00001a          0x4 LONG 0xfe0 DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00001a          0x4 LONG 0x1024 DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00001c          0x4 LONG 0x194 DEFINED (__IC2Interrupt)?ABSOLUTE (__IC2Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00001e          0x4 LONG 0x194 DEFINED (__OC2Interrupt)?ABSOLUTE (__OC2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000020          0x4 LONG 0x1012 DEFINED (__T2Interrupt)?ABSOLUTE (__T2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000022          0x4 LONG 0x1044 DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000020          0x4 LONG 0x1056 DEFINED (__T2Interrupt)?ABSOLUTE (__T2Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000022          0x4 LONG 0x1088 DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000024          0x4 LONG 0x194 DEFINED (__SPI1Interrupt)?ABSOLUTE (__SPI1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000026          0x4 LONG 0x194 DEFINED (__U1RXInterrupt)?ABSOLUTE (__U1RXInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000028          0x4 LONG 0x194 DEFINED (__U1TXInterrupt)?ABSOLUTE (__U1TXInterrupt):ABSOLUTE (__DefaultInterrupt)
@@ -656,7 +660,7 @@ userdata
                   0x000044          0x4 LONG 0x194 DEFINED (__U2RXInterrupt)?ABSOLUTE (__U2RXInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000046          0x4 LONG 0x194 DEFINED (__U2TXInterrupt)?ABSOLUTE (__U2TXInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000048          0x4 LONG 0x194 DEFINED (__SPI2Interrupt)?ABSOLUTE (__SPI2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00004a          0x4 LONG 0x1098 DEFINED (__C1Interrupt)?ABSOLUTE (__C1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00004a          0x4 LONG 0x10fa DEFINED (__C1Interrupt)?ABSOLUTE (__C1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00004c          0x4 LONG 0x194 DEFINED (__IC3Interrupt)?ABSOLUTE (__IC3Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00004e          0x4 LONG 0x194 DEFINED (__IC4Interrupt)?ABSOLUTE (__IC4Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000050          0x4 LONG 0x194 DEFINED (__IC5Interrupt)?ABSOLUTE (__IC5Interrupt):ABSOLUTE (__DefaultInterrupt)
@@ -696,11 +700,11 @@ userdata
                   0x000094          0x4 LONG 0x194 DEFINED (__AltINT0Interrupt)?ABSOLUTE (__AltINT0Interrupt):DEFINED (__INT0Interrupt)?ABSOLUTE (__INT0Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000096          0x4 LONG 0x194 DEFINED (__AltIC1Interrupt)?ABSOLUTE (__AltIC1Interrupt):DEFINED (__IC1Interrupt)?ABSOLUTE (__IC1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000098          0x4 LONG 0x194 DEFINED (__AltOC1Interrupt)?ABSOLUTE (__AltOC1Interrupt):DEFINED (__OC1Interrupt)?ABSOLUTE (__OC1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00009a          0x4 LONG 0xfe0 DEFINED (__AltT1Interrupt)?ABSOLUTE (__AltT1Interrupt):DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00009a          0x4 LONG 0x1024 DEFINED (__AltT1Interrupt)?ABSOLUTE (__AltT1Interrupt):DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00009c          0x4 LONG 0x194 DEFINED (__AltIC2Interrupt)?ABSOLUTE (__AltIC2Interrupt):DEFINED (__IC2Interrupt)?ABSOLUTE (__IC2Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00009e          0x4 LONG 0x194 DEFINED (__AltOC2Interrupt)?ABSOLUTE (__AltOC2Interrupt):DEFINED (__OC2Interrupt)?ABSOLUTE (__OC2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000a0          0x4 LONG 0x1012 DEFINED (__AltT2Interrupt)?ABSOLUTE (__AltT2Interrupt):DEFINED (__T2Interrupt)?ABSOLUTE (__T2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000a2          0x4 LONG 0x1044 DEFINED (__AltT3Interrupt)?ABSOLUTE (__AltT3Interrupt):DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000a0          0x4 LONG 0x1056 DEFINED (__AltT2Interrupt)?ABSOLUTE (__AltT2Interrupt):DEFINED (__T2Interrupt)?ABSOLUTE (__T2Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000a2          0x4 LONG 0x1088 DEFINED (__AltT3Interrupt)?ABSOLUTE (__AltT3Interrupt):DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000a4          0x4 LONG 0x194 DEFINED (__AltSPI1Interrupt)?ABSOLUTE (__AltSPI1Interrupt):DEFINED (__SPI1Interrupt)?ABSOLUTE (__SPI1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000a6          0x4 LONG 0x194 DEFINED (__AltU1RXInterrupt)?ABSOLUTE (__AltU1RXInterrupt):DEFINED (__U1RXInterrupt)?ABSOLUTE (__U1RXInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000a8          0x4 LONG 0x194 DEFINED (__AltU1TXInterrupt)?ABSOLUTE (__AltU1TXInterrupt):DEFINED (__U1TXInterrupt)?ABSOLUTE (__U1TXInterrupt):ABSOLUTE (__DefaultInterrupt)
@@ -720,7 +724,7 @@ userdata
                   0x0000c4          0x4 LONG 0x194 DEFINED (__AltU2RXInterrupt)?ABSOLUTE (__AltU2RXInterrupt):DEFINED (__U2RXInterrupt)?ABSOLUTE (__U2RXInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000c6          0x4 LONG 0x194 DEFINED (__AltU2TXInterrupt)?ABSOLUTE (__AltU2TXInterrupt):DEFINED (__U2TXInterrupt)?ABSOLUTE (__U2TXInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000c8          0x4 LONG 0x194 DEFINED (__AltSPI2Interrupt)?ABSOLUTE (__AltSPI2Interrupt):DEFINED (__SPI2Interrupt)?ABSOLUTE (__SPI2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000ca          0x4 LONG 0x1098 DEFINED (__AltC1Interrupt)?ABSOLUTE (__AltC1Interrupt):DEFINED (__C1Interrupt)?ABSOLUTE (__C1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000ca          0x4 LONG 0x10fa DEFINED (__AltC1Interrupt)?ABSOLUTE (__AltC1Interrupt):DEFINED (__C1Interrupt)?ABSOLUTE (__C1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000cc          0x4 LONG 0x194 DEFINED (__AltIC3Interrupt)?ABSOLUTE (__AltIC3Interrupt):DEFINED (__IC3Interrupt)?ABSOLUTE (__IC3Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000ce          0x4 LONG 0x194 DEFINED (__AltIC4Interrupt)?ABSOLUTE (__AltIC4Interrupt):DEFINED (__IC4Interrupt)?ABSOLUTE (__IC4Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000d0          0x4 LONG 0x194 DEFINED (__AltIC5Interrupt)?ABSOLUTE (__AltIC5Interrupt):DEFINED (__IC5Interrupt)?ABSOLUTE (__IC5Interrupt):ABSOLUTE (__DefaultInterrupt)
@@ -1831,7 +1835,7 @@ __c30_signature
  __c30_signature
                   0x000540          0x6 c:/program files/microchip/xc16/v1.21/bin/bin/../../lib\libm-elf.a(floatundisf.eo)
 
-.ndata              0x0850         0x34
+.ndata              0x0850         0x36
  .ndata             0x0850         0x2a build/default/debug/Encoder.o
                     0x0850                  _EncoderPositionCounter
                     0x0854                  _EncoderPrevPositionCounter
@@ -1847,11 +1851,12 @@ __c30_signature
                     0x0876                  _start
                     0x0878                  _regim1
                     0x0879                  _regim2
- .ndata             0x087a          0xa build/default/debug/main.o
+ .ndata             0x087a          0xc build/default/debug/main.o
                     0x087a                  __lowEdge
                     0x087e                  __highEdge
                     0x0882                  _startSignal
                     0x0883                  _fReadS
+                    0x0884                  _interCount
 
 .config_ICS       0xf8000c          0x2
  .config_ICS      0xf8000c          0x2 build/default/debug/main.o
@@ -1876,8 +1881,8 @@ __c30_signature
  .config_FCKSMEN
                   0xf80000          0x2 build/default/debug/main.o
 
-.text             0x0005c4        0xcf0
- .text            0x0005c4        0x9f4 build/default/debug/Encoder.o
+.text             0x0005c4        0xd6c
+ .text            0x0005c4        0xa38 build/default/debug/Encoder.o
                   0x0005c4                  _EncForwardDirectionStroke
                   0x000634                  _EncReverseDirectionStroke
                   0x0006a4                  _EncCountV
@@ -1887,44 +1892,45 @@ __c30_signature
                   0x00077a                  _EncReadOverZeroSignal
                   0x0007b4                  _EncReadHandModeSignal
                   0x0007ee                  _EncReadDirectionSignal
-                  0x000860                  _EncReadPuskSignal
-                  0x00089c                  _WriteOutputSignals
-                  0x000aca                  _EncSpeedControl
-                  0x000b28                  _EncStopControl
-                  0x000b6c                  _ExactStopSensors
-                  0x000be0                  _EncSlowdownControl
-                  0x000c28                  _EncStartControl
-                  0x000c6e                  _EncGetDirection
-                  0x000c78                  _EncGetStop
-                  0x000c82                  _EncGetStart
-                  0x000c8c                  _TrySetOverRise
-                  0x000d34                  _ParseTPDO1
-                  0x000dd8                  _ParseTPDO3
-                  0x000e84                  _AnalyzePrevV
-                  0x000f36                  _SetSpeedByJoystick
-                  0x000f80                  _SetStartDirection
- .text            0x000fb8        0x15c build/default/debug/main.o
-                  0x000fb8                  _main
-                  0x000fe0                  __T1Interrupt
-                  0x001012                  __T2Interrupt
-                  0x001044                  __T3Interrupt
-                  0x001098                  __C1Interrupt
-                  0x001108                  _SetStartSignal
- .text            0x001114         0xca build/default/debug/Can.o
-                  0x001114                  _Can1Initialization
-                  0x00118c                  _Can1SendData
-                  0x0011cc                  _Can1ReceiveData
- .text            0x0011de         0x72 build/default/debug/Timer.o
-                  0x0011de                  _StartTimer1
-                  0x001204                  _StartTimer2
-                  0x00122a                  _StartTimer3
- .text            0x001250         0x64 build/default/debug/ADC.o
-                  0x001250                  _InitADC
-                  0x001272                  _GetAnalogSignal
+                  0x000860                  _EncIsDirectionChosen
+                  0x00089a                  _EncReadPuskSignal
+                  0x0008d6                  _WriteOutputSignals
+                  0x000b04                  _EncSpeedControl
+                  0x000b62                  _EncStopControl
+                  0x000bac                  _ExactStopSensors
+                  0x000c30                  _EncSlowdownControl
+                  0x000c78                  _EncStartControl
+                  0x000cb6                  _EncGetDirection
+                  0x000cc0                  _EncGetStop
+                  0x000cca                  _EncGetStart
+                  0x000cd4                  _TrySetOverRise
+                  0x000d7c                  _ParseTPDO1
+                  0x000e20                  _ParseTPDO3
+                  0x000ecc                  _AnalyzePrevV
+                  0x000f7e                  _SetSpeedByJoystick
+                  0x000fd6                  _SetStartDirection
+ .text            0x000ffc        0x194 build/default/debug/main.o
+                  0x000ffc                  _main
+                  0x001024                  __T1Interrupt
+                  0x001056                  __T2Interrupt
+                  0x001088                  __T3Interrupt
+                  0x0010fa                  __C1Interrupt
+                  0x001184                  _SetStartSignal
+ .text            0x001190         0xca build/default/debug/Can.o
+                  0x001190                  _Can1Initialization
+                  0x001208                  _Can1SendData
+                  0x001248                  _Can1ReceiveData
+ .text            0x00125a         0x72 build/default/debug/Timer.o
+                  0x00125a                  _StartTimer1
+                  0x001280                  _StartTimer2
+                  0x0012a6                  _StartTimer3
+ .text            0x0012cc         0x64 build/default/debug/ADC.o
+                  0x0012cc                  _InitADC
+                  0x0012ee                  _GetAnalogSignal
 
-.dinit            0x0012b4         0x32
- .dinit           0x0012b4         0x32 data_init
+.dinit            0x001330         0x32
+ .dinit           0x001330         0x32 data_init
 
-.text             0x0012e6         0x24
- .text            0x0012e6         0x24 build/default/debug/MainLibrary.o
-                  0x0012e6                  _Delay
+.text             0x001362         0x24
+ .text            0x001362         0x24 build/default/debug/MainLibrary.o
+                  0x001362                  _Delay

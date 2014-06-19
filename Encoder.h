@@ -40,6 +40,7 @@ unsigned char EncReadHandModeSignal();
  * @todo read a state of Direction switch
  */
 void EncReadDirectionSignal();
+unsigned char EncIsDirectionChosen();
 /**
  * @author Liutyi Ievgen
  * @return Pusk switch state
