@@ -321,13 +321,19 @@ void EncStopControl()
 {
     long s = EncGetS();
 
+    if(stop == 1 && EncReadHandModeSignal() == 1)
+    {
+        T1CONbits.TON = 0;
+        necessarySpeed = 0;
+    }
     if((direction == 0 && s <= _lowEdge) || (direction == 1 && s >= _highEdge))
     {
         T1CONbits.TON = 0;
         necessarySpeed = 0;
         wasExactStop = 1;
+        Delay(200000);
     }
-    if((stop == 1 && EncReadHandModeSignal() == 1) || (EncIsDirectionChosen() == 0 && EncReadHandModeSignal() == 0))
+    if(EncIsDirectionChosen() == 0 && EncReadHandModeSignal() == 0)
     {
         T1CONbits.TON = 0;
         necessarySpeed = 0;
@@ -370,7 +376,6 @@ void EncStartControl()
     {
         Delay(100000);
         T1CONbits.TON = 1;
-       // T2CONbits.TON = 1;
     }
     else if(EncReadHandModeSignal() == 0 && EncIsDirectionChosen() == 1) //if(EncReadPuskSignal() == 1)
     {
@@ -382,8 +387,6 @@ void EncStartControl()
         }
         Delay(100000);
         T1CONbits.TON = 1;
-        //if(T2CONbits.TON == 0)
-            //T2CONbits.TON = 1;
     }
 }
 
