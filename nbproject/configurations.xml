@@ -11,6 +11,12 @@
       <itemPath>globals.h</itemPath>
       <itemPath>Can.h</itemPath>
       <itemPath>ADC.h</itemPath>
+      <itemPath>WriteParameters.h</itemPath>
+      <itemPath>FRAM.h</itemPath>
+      <itemPath>Spi.h</itemPath>
+      <itemPath>CanOpen.h</itemPath>
+      <itemPath>Parameters.h</itemPath>
+      <itemPath>Fat.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -25,6 +31,10 @@
       <itemPath>MainLibrary.c</itemPath>
       <itemPath>Can.c</itemPath>
       <itemPath>ADC.c</itemPath>
+      <itemPath>WriteParameters.c</itemPath>
+      <itemPath>CanOpen.c</itemPath>
+      <itemPath>Parameters.c</itemPath>
+      <itemPath>Fat.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -109,6 +119,8 @@
       <C30-AR>
         <property key="additional-options-chop-files" value="false"/>
       </C30-AR>
+      <C30-AS>
+      </C30-AS>
       <C30-LD>
         <property key="additional-options-use-response-files" value="false"/>
         <property key="boot-eeprom" value="no_eeprom"/>

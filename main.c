@@ -10,11 +10,16 @@
 #include <xc.h>
 #include "Timer.h"
 #include "Can.h"
+#include "CanOpen.h"
 #include "Encoder.h"
 #include "MainLibrary.h"
 #include "Configuration.h"
 #include "globals.h"
 #include "ADC.h"
+#include "Spi.h"
+#include "FRAM.h"
+#include "WriteParameters.h"
+#include "Parameters.h"
 
 // FOSC
 #pragma config FOSFPR = XT_PLL16        // Oscillator (XT w/PLL 16x)
@@ -69,6 +74,10 @@ char interCount = 0;
 int main(int argc, char** argv) {
     ADPCFG = 0xFFFF; //RA only digit
     InitADC();
+    FramInitialization();
+    WriteAllParameters();
+    ReadConfig();
+
     TRISDbits.TRISD8 = 0;//set output on RD8
     TRISDbits.TRISD9 = 0;//set output on RD9
     LATDbits.LATD8 = 0; // LE1
