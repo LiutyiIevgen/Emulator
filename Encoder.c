@@ -7,15 +7,26 @@
 //global vars
 extern long _lowEdge;
 extern long _highEdge;
+extern long halfS;
+extern long halfV;
+extern int Vstart;
+extern int halfVstart;
+extern int R;
+extern int Amax;
+extern int Vmax;
 
 long EncoderPositionCounter = 0;
 long EncoderPrevPositionCounter = 0;
-unsigned int currentSpeed = 0;
+int currentSpeed = 0;
+int currentAccel = 0;
+
 unsigned int direction = 0;
 unsigned char reverse = 0;
 unsigned int necessarySpeed = SPEED;
 long slowdown_zone = SLOWDOWN_ZONE;
 unsigned int dot_speed = DOT_SPEED;
+unsigned char handmode = 0;
+
 long prevV[3] = {0, 0, 0};
 int slowdown_state = 0;
 int stop = 0;
@@ -23,6 +34,14 @@ int start = 0;
 char regim1 = 0;
 char regim2 = 0;
 int wasExactStop = 0;
+
+char speedup = 0;
+char slowdown = 0;
+long flatcnt=0,flatcnt1=0;
+long new_pr=0;
+
+unsigned short load = 0;
+char autoload_allowed = 0;
 
 
 void EncForwardDirectionStroke()
@@ -178,7 +197,6 @@ unsigned char EncReadOverZeroSignal()
 
 unsigned char EncReadHandModeSignal()
 {
-    unsigned char handmode = 0;
     TRISBbits.TRISB14 = 0;//set output on RB14
     TRISDbits.TRISD10 = 0;//set output on RD10
     TRISDbits.TRISD2 = 1;//set input on RD2
@@ -261,6 +279,23 @@ unsigned char EncReadPuskSignal()
     return pusk;
 }
 
+void SetLoadSignalState()
+{
+    TRISBbits.TRISB14 = 0;//set output on RB14
+    TRISDbits.TRISD10 = 0;//set output on RD10
+    TRISDbits.TRISD1 = 1;//set input on RD5
+    LATBbits.LATB14 = 0; // OE1
+    LATDbits.LATD10 = 1; // LE3
+    Delay(10);
+    LATBbits.LATB14 = 0; // OE1
+    LATDbits.LATD10 = 0; // LE3
+    Delay(10);
+    if(PORTDbits.RD1 == 0)
+        autoload_allowed = 1;
+    else
+        autoload_allowed = 0;
+}
+
 void WriteOutputSignals(int data)
 {
     data = ~data;
@@ -308,13 +343,112 @@ void WriteOutputSignals(int data)
 
 void EncSpeedControl()
 {
-    unsigned int speedIncrease = SPEED_INCREASE;
+    if(!start) return;
+
+    if(!handmode)
+    {
+        long currS = labs(EncGetS());
+
+        char cond=1;
+
+        if(((direction==0)&&(currS > halfS))||((direction==1)&&(currS < halfS)))
+           cond=0;
+
+        if(cond)
+        {
+            if(speedup)
+               flatcnt++;
+            else
+                SpeedUp(currS);
+        }
+        else
+        {
+            if(flatcnt<=0)
+                SlowDown();
+            else
+                flatcnt--;
+        }
+    
+    currentSpeed+=currentAccel;
+    }
+    
+    double distancePerMark = DISTANCE_PER_MARK;
+    double s_per_mark = (abs(currentSpeed)/distancePerMark);
+    s_per_mark = 1/s_per_mark;
+    unsigned long pr = (s_per_mark/0.0416)*1000000;
+   
+    //unsigned long pr = 24000000/(currentSpeed/distancePerMark);
+    _T5IE = 0;
+    TMR5HLD = 0;
+    TMR4 = 0;
+    PR5 = (pr>>16);
+    PR4 = (pr&0x0000FFFF);
+    _T5IE = 1;
+   /* unsigned int speedIncrease = SPEED_INCREASE;
     float distancePerMark = DISTANCE_PER_MARK;
     int rez = currentSpeed - necessarySpeed;
     if(rez==0)
         return;
     currentSpeed += rez < 0 ? speedIncrease : -speedIncrease;
-    PR1 = 24000000/(currentSpeed/distancePerMark);
+    PR1 = 24000000/(currentSpeed/distancePerMark);*/
+}
+
+void SpeedUp(long currS)
+{    
+    long speedup_point = direction<1 ?_highEdge:_lowEdge;
+    speedup_point = labs(speedup_point)-SPEEDUP_ZONE;
+
+    int absV = abs(currentSpeed);
+
+    if(absV < (halfV+halfVstart))
+        if(abs(currentAccel) < Amax)
+        {
+            if(currS > speedup_point)
+            {
+              if(absV<Vstart)
+                {currentSpeed=direction<1 ? Vstart : -Vstart; }
+            }else 
+              currentAccel+=direction<1 ? R : -R;
+        }
+        else
+          flatcnt1++;
+    else
+        if(flatcnt1==0)
+            if(abs(currentAccel)<=0)
+            {
+                currentAccel=0;
+                speedup=1;
+                flatcnt=0;
+                flatcnt1=0;
+            }
+            else
+                currentAccel-= direction<1 ? R : -R;
+        else
+            flatcnt1--;
+}
+
+void SlowDown()
+{
+    if(abs(currentSpeed) < (halfV+halfVstart))
+    {
+        if(flatcnt1==0)
+            if(currentAccel==0)
+            {
+                currentAccel=0;
+                slowdown = 1;
+            }
+            else
+                currentAccel+= direction<1 ? R : -R;
+        else
+            flatcnt1--;
+    }
+    else
+    {
+        if(abs(currentAccel) >= Amax)
+            flatcnt1++;
+        else
+            currentAccel-= direction<1 ? R : -R;
+        }
 }
 
 void EncStopControl()
@@ -323,24 +457,92 @@ void EncStopControl()
 
     if(stop == 1 && EncReadHandModeSignal() == 1)
     {
-        T1CONbits.TON = 0;
+        T4CONbits.TON = 0;
         necessarySpeed = 0;
+        start=0;
+        currentSpeed = 0;
+        currentAccel = 0;
     }
     if((direction == 0 && s <= _lowEdge) || (direction == 1 && s >= _highEdge))
     {
-        T1CONbits.TON = 0;
+        T4CONbits.TON = 0;
         necessarySpeed = 0;
+
+        currentSpeed = 0;//111
+        currentAccel = 0;//!!!
+
         wasExactStop = 1;
+        start=0;
         Delay(200000);
     }
     if(EncIsDirectionChosen() == 0 && EncReadHandModeSignal() == 0)
     {
-        T1CONbits.TON = 0;
+        T4CONbits.TON = 0;
         necessarySpeed = 0;
+        start=0;
+        currentSpeed = 0;//!!
+        currentAccel = 0;
     }
 }
 
 void ExactStopSensors()
+{
+    long highEdge = HIGH_SEN_POS;
+    long lowEdge = LOW_SEN_POS;
+    long exactStopZone = EXACT_STOP_ZONE;
+    long s = EncGetS();
+
+    if(!autoload_allowed)
+        load = 80;
+
+    if(s <= lowEdge && s >= lowEdge - exactStopZone)
+    {
+        if(load < 20)
+        {
+         WriteOutputSignals(2|(1<<3)|(0<<4));
+         load++;
+        }
+        else if(load < 60)
+        {
+         WriteOutputSignals(2|(1<<3)|(0<<4)|(1<<5));
+         load++;
+        }
+        else if(load < 80)
+        {
+         WriteOutputSignals(2|(1<<3)|(0<<4)|(0<<5));
+         load++;
+        }
+        if(load==80)
+         WriteOutputSignals(2|(1<<4));
+    }
+    else if(s >= highEdge && s <= highEdge + exactStopZone)
+    {
+         if(load < 20)
+         {
+          WriteOutputSignals(1|(1<<3)|(0<<4));
+          load++;
+         }
+         else if(load < 60)
+         {
+              WriteOutputSignals(1|(1<<3)|(0<<4)|(1<<5));
+             load++;
+         }
+         else if(load < 80)
+         {
+          WriteOutputSignals(1|(1<<3)|(0<<4)|(0<<5));
+          load++;
+         }
+        if(load==80)
+         WriteOutputSignals(1|(1<<4));
+       // WriteOutputSignals(1|(1<<4));
+    }
+    else
+    {
+        WriteOutputSignals(3|(1<<4));
+        load = 0;
+    }
+}
+/*void ExactStopSensors()
 {
     long highEdge = HIGH_SEN_POS;
     long lowEdge = LOW_SEN_POS;
@@ -356,7 +558,7 @@ void ExactStopSensors()
     }
     else
         WriteOutputSignals(3);
-}
+}*/
 
 void EncSlowdownControl()
 {
@@ -370,12 +572,13 @@ void EncSlowdownControl()
 
 void EncStartControl()
 {
-    if(T1CONbits.TON)
+    if(T4CONbits.TON)
         return;
     if(EncReadHandModeSignal() == 1 && stop == 0)
     {
         Delay(100000);
-        T1CONbits.TON = 1;
+        T4CONbits.TON = 1;
+        start=1;
     }
     else if(EncReadHandModeSignal() == 0 && EncIsDirectionChosen() == 1) //if(EncReadPuskSignal() == 1)
     {
@@ -386,7 +589,10 @@ void EncStartControl()
             wasExactStop = 0;
         }
         Delay(100000);
-        T1CONbits.TON = 1;
+        T4CONbits.TON = 1;
+        start=1;
+        speedup=0;
+        slowdown=0;
     }
 }
 
@@ -409,21 +615,17 @@ void TrySetOverRise()
 {
     long lowSenPos = LOW_SEN_POS;
     long highSenPos = HIGH_SEN_POS;
-    /*if(EncReadOverZeroSignal() == 1 && (_lowEdge > lowSenPos - 1000))
+
+    if((regim1 == 0 && regim2 == 0) && (_lowEdge > lowSenPos - REVISION_EXTRA_EDGE))
     {
-        _lowEdge -= 1000;
-    }
-    else if(EncReadOverZeroSignal() == 0)
-        _lowEdge = lowSenPos; */
-    if((regim1 == 0 && regim2 == 0) && (_lowEdge > lowSenPos - 1000))
-    {
-        _lowEdge -= 1000;
+         _lowEdge -= REVISION_EXTRA_EDGE;
     }
     else if (regim1 != 0 || regim2 != 0)
         _lowEdge = lowSenPos;
-    if((regim1 == 0 && regim2 == 0) && (_highEdge < highSenPos + 1000))
+
+    if((regim1 == 0 && regim2 == 0) && (_highEdge < highSenPos + REVISION_EXTRA_EDGE))
     {
-        _highEdge += 1000;
+        _highEdge += REVISION_EXTRA_EDGE;
     }
     else if (regim1 != 0 || regim2 != 0)
         _highEdge = highSenPos;
@@ -481,7 +683,7 @@ void AnalyzePrevV()
 {
     if((prevV[0] == 1 && prevV[1] == 1)||(prevV[0] == 1 && prevV[2] == 1)||(prevV[1] == 1 && prevV[2] == 1))
     {
-        T1CONbits.TON = 0;
+        T4CONbits.TON = 0;
         T2CONbits.TON = 0;
         T3CONbits.TON = 0;
         currentSpeed = 0;
@@ -490,6 +692,7 @@ void AnalyzePrevV()
     {
         if(T3CONbits.TON == 0)
         {
+            WriteOutputSignals(3|(1<<4));
             SetStartSignal(2);
             T3CONbits.TON = 1;
         }
@@ -501,12 +704,24 @@ void SetSpeedByJoystick()
     if(EncReadHandModeSignal() == 1)
     {
         unsigned int AdcMaximum = ADC_MAXIMUM;
-        unsigned int MaxSpeed = SPEED;
+        unsigned int MaxSpeed = Vmax;
+        if(regim1 == 0 && regim2 == 0)
+            MaxSpeed = REVISION_SPEED;
+
+        float koef = (float)MaxSpeed/AdcMaximum;
+        unsigned int AdcNumber = GetAnalogSignal(0);
+
+        int necessaryV = (AdcNumber*koef);
+        int def = necessaryV - currentSpeed;
+        currentSpeed+= def;
+
+        
+       /* unsigned int MaxSpeed = Vmax;
         if(regim1 == 0 && regim2 == 0)
             MaxSpeed = REVISION_SPEED;
         unsigned int koef = MaxSpeed/AdcMaximum;
         unsigned int AdcNumber = GetAnalogSignal(0);
-        necessarySpeed = (AdcNumber*koef);
+        necessarySpeed = (AdcNumber*koef);*/
     }
 }
 
@@ -519,3 +734,5 @@ void SetStartDirection()
             direction = 1;
     }
 }
+
+

@@ -57,6 +57,8 @@ void __attribute__((__interrupt__, __auto_psv__)) _T1Interrupt(void);
 void __attribute__((__interrupt__, __auto_psv__)) _T2Interrupt(void);
 // Function prototype for timer 3 ISR
 void __attribute__((__interrupt__, __auto_psv__)) _T3Interrupt(void);
+
+void __attribute__((__interrupt__, __auto_psv__)) _T5Interrupt(void);
 // Can1 Receive Parameter
 void __attribute__ ((__interrupt__, __auto_psv__)) _C1Interrupt (void);
 
@@ -75,6 +77,10 @@ int main(int argc, char** argv) {
     Delay(3000000);
     TRISCbits.TRISC13 = 0;//set output on RC13
     LATCbits.LATC13 = 1;
+
+    halfS = (labs(_lowEdge)+labs(_highEdge))/2 - labs(_highEdge);
+    halfV = Vmax/2;
+    halfVstart = Vstart/2;
     //int i = 0;
     //for(i; i < 10000; i++)
     //{
@@ -82,38 +88,41 @@ int main(int argc, char** argv) {
         //Delay(2000);
         //LATCbits.LATC13 = 1 - LATCbits.LATC13; // RC13 value (LED VD1 => ON)
     //}
+    
     Can1Initialization();
     InitCounter();
     WriteOutputSignals(1);
-    /*StartTimer1();
+  //  float distancePerMark = DISTANCE_PER_MARK;
+
+   /* StartTimer1();
     StartTimer2();
     StartTimer3(); */
-
     while(1);
     return (EXIT_SUCCESS);
 }
 
 // Timer 1 interrupt service write data to uart
-void __attribute__((__interrupt__, __auto_psv__)) _T1Interrupt(void)
+void __attribute__((__interrupt__, __auto_psv__)) _T5Interrupt(void)
 {
-    _T1IF = 0;
+    _T5IF = 0;
     if(!EncGetDirection())
         EncForwardDirectionStroke();
     else
         EncReverseDirectionStroke();
-   // TRISCbits.TRISC13 = 0;//set output on RC13
-   // LATCbits.LATC13 = 1 - LATCbits.LATC13; // RC13 value (LED VD1 => ON)
 }
 
 void __attribute__((__interrupt__, __auto_psv__)) _T2Interrupt(void)
 {
     _T2IF = 0;
+    SetLoadSignalState();
+    EncReadDirectionSignal();
     EncStartControl();
+    
     EncSpeedControl();
     ExactStopSensors();
-    EncReadDirectionSignal();
+    
     EncStopControl();
-    EncSlowdownControl();
+   // EncSlowdownControl();
     SetSpeedByJoystick();
 }
 
@@ -133,12 +142,12 @@ void __attribute__((__interrupt__, __auto_psv__)) _T3Interrupt(void)
         startSignal = signal;
         if(startSignal == 1)
         {
-            T1CONbits.TON = 1;
+            T4CONbits.TON = 0;
             T2CONbits.TON = 1;
         }
         else if(startSignal == 0)
         {
-            T1CONbits.TON = 0;
+            T4CONbits.TON = 0;
             T2CONbits.TON = 0;
         }
 }
@@ -159,7 +168,7 @@ void __attribute__ ((__interrupt__, __auto_psv__)) _C1Interrupt (void){
     {
         ExactStopSensors();
         SetStartDirection();
-        StartTimer1();
+        StartTimer4();
         StartTimer2();
         StartTimer3();
         fReadS = 1;

@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=Emulator
+PROJECTNAME=Emulator_new
 
 # Active Configuration
 DEFAULTCONF=default
