@@ -14,12 +14,12 @@
 #include "Encoder.h"
 #include "MainLibrary.h"
 #include "Configuration.h"
-#include "globals.h"
 #include "ADC.h"
 #include "Spi.h"
 #include "FRAM.h"
 #include "WriteParameters.h"
-#include "Parameters.h"
+#include "globals.h"
+
 
 // FOSC
 #pragma config FOSFPR = XT_PLL16        // Oscillator (XT w/PLL 16x)
@@ -71,11 +71,24 @@ char startSignal = -1;
 char fReadS = 0;
 char interCount = 0;
 
+/*int _nodeId = 5;
+long _lowEdge; //mm
+long _highEdge; //mm
+int Vmax; //mm/sec
+int Vstart;
+int Amax;  //mm/sec^2
+int R; //mm/sec^3
+
+long halfS;
+long halfV;
+int halfVstart;
+*/
+char was_sdo = 0;
 int main(int argc, char** argv) {
     ADPCFG = 0xFFFF; //RA only digit
     InitADC();
     FramInitialization();
-    WriteAllParameters();
+    //WriteAllParameters();
     ReadConfig();
 
     TRISDbits.TRISD8 = 0;//set output on RD8
@@ -163,16 +176,34 @@ void __attribute__((__interrupt__, __auto_psv__)) _T3Interrupt(void)
 
 void __attribute__ ((__interrupt__, __auto_psv__)) _C1Interrupt (void){
     IFS1bits.C1IF = 0; //Clear CAN1 interrupt flag
-    C1INTFbits.RX0IF = 0; //Clear CAN1 RX interrupt flag
-    C1INTFbits.RX1IF = 0; //Clear CAN1 RX interrupt flag
+   // C1INTFbits.RX0IF = 0; //Clear CAN1 RX interrupt flag
+   // C1INTFbits.RX1IF = 0; //Clear CAN1 RX interrupt flag
     char rxData[8];
+    unsigned int sId;
+    
     if(C1CTRLbits.ICODE == 7) //check filters
     {
         C1INTFbits.WAKIF = 0;
         return;
     }
-    unsigned int sId = C1RX0SIDbits.SID;
-    Can1ReceiveData(rxData);
+    
+    if(C1INTFbits.RX0IF == 1)
+    {
+        sId = C1RX0SIDbits.SID;
+        C1INTFbits.RX0IF = 0;
+        CAN1ReceiveMessage(rxData,8,0);
+    } else if (C1INTFbits.RX1IF == 1)
+    {
+        sId = C1RX1SIDbits.SID;
+        C1INTFbits.RX1IF = 0;
+        CAN1ReceiveMessage(rxData,8,1);
+    }
+   
+    if(sId == 0x607)
+    {
+        was_sdo = 1; 
+        //Can1ReceiveData(rxData);
+    }
     if(fReadS == 0 && interCount == 10)
     {
         ExactStopSensors();
@@ -188,6 +219,8 @@ void __attribute__ ((__interrupt__, __auto_psv__)) _C1Interrupt (void){
         interCount++;
     }
     ParseTPDO3(sId, rxData);
+    CanOpenParseRSDO(sId,rxData,1); //parse message and send response
+    
     C1RX0CONbits.RXFUL = 0;
     C1RX1CONbits.RXFUL = 0;
   }

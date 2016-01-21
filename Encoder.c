@@ -1,10 +1,8 @@
 #include <xc.h>
 #include "Encoder.h"
 #include "MainLibrary.h"
-#include "Configuration.h"
 #include "ADC.h"
 
-//global vars
 extern long _lowEdge;
 extern long _highEdge;
 extern long halfS;
@@ -14,6 +12,12 @@ extern int halfVstart;
 extern int R;
 extern int Amax;
 extern int Vmax;
+extern double distancePerMark;
+extern long exactStopZone;
+extern long slowdown_zone;
+extern int RevisionSpeed;
+extern int SpeedUpZone;
+extern int RevisionExtraEdge;
 
 long EncoderPositionCounter = 0;
 long EncoderPrevPositionCounter = 0;
@@ -22,9 +26,8 @@ int currentAccel = 0;
 
 unsigned int direction = 0;
 unsigned char reverse = 0;
-unsigned int necessarySpeed = SPEED;
-long slowdown_zone = SLOWDOWN_ZONE;
-unsigned int dot_speed = DOT_SPEED;
+unsigned int necessarySpeed;// = Vmax;
+//unsigned int dot_speed = DOT_SPEED;
 unsigned char handmode = 0;
 
 long prevV[3] = {0, 0, 0};
@@ -141,19 +144,19 @@ void EncReverseDirectionStroke()
 int EncCountV()
 {
     long difference = EncoderPositionCounter - EncoderPrevPositionCounter;
-    difference *= DISTANCE_PER_MARK;
+    difference *= distancePerMark;
     EncoderPrevPositionCounter = EncoderPositionCounter;
     return difference/0.01;
 }
 long EncGetS()
 {
-    return EncoderPositionCounter*DISTANCE_PER_MARK;
+    return EncoderPositionCounter*distancePerMark;
 }
 
 void InitCounter()
 {
     long highEdge = _highEdge;
-    float distancePerMark = DISTANCE_PER_MARK;
+    float distancePerMark = distancePerMark;
     EncoderPositionCounter = highEdge/distancePerMark;
 }
 
@@ -372,7 +375,7 @@ void EncSpeedControl()
     currentSpeed+=currentAccel;
     }
     
-    double distancePerMark = DISTANCE_PER_MARK;
+   //double distancePerMark = DISTANCE_PER_MARK;
     double s_per_mark = (abs(currentSpeed)/distancePerMark);
     s_per_mark = 1/s_per_mark;
     unsigned long pr = (s_per_mark/0.0416)*1000000;
@@ -396,7 +399,7 @@ void EncSpeedControl()
 void SpeedUp(long currS)
 {    
     long speedup_point = direction<1 ?_highEdge:_lowEdge;
-    speedup_point = labs(speedup_point)-SPEEDUP_ZONE;
+    speedup_point = labs(speedup_point)-SpeedUpZone;;
 
     int absV = abs(currentSpeed);
 
@@ -487,15 +490,14 @@ void EncStopControl()
 
 void ExactStopSensors()
 {
-    long highEdge = HIGH_SEN_POS;
-    long lowEdge = LOW_SEN_POS;
-    long exactStopZone = EXACT_STOP_ZONE;
+   // long highEdge = HIGH_SEN_POS;
+   // long lowEdge = LOW_SEN_POS;
     long s = EncGetS();
 
     if(!autoload_allowed)
         load = 80;
 
-    if(s <= lowEdge && s >= lowEdge - exactStopZone)
+    if(s <= _lowEdge && s >= _lowEdge - exactStopZone)
     {
         if(load < 20)
         {
@@ -515,7 +517,7 @@ void ExactStopSensors()
         if(load==80)
          WriteOutputSignals(2|(1<<4));
     }
-    else if(s >= highEdge && s <= highEdge + exactStopZone)
+    else if(s >= _highEdge && s <= _highEdge + exactStopZone)
     {
          if(load < 20)
          {
@@ -582,7 +584,7 @@ void EncStartControl()
     }
     else if(EncReadHandModeSignal() == 0 && EncIsDirectionChosen() == 1) //if(EncReadPuskSignal() == 1)
     {
-        necessarySpeed = SPEED;
+        necessarySpeed = Vmax;
         if(wasExactStop == 1)
         {
             direction = 1 - direction;
@@ -613,19 +615,19 @@ unsigned int EncGetStart()
 
 void TrySetOverRise()
 {
-    long lowSenPos = LOW_SEN_POS;
-    long highSenPos = HIGH_SEN_POS;
+    long lowSenPos = _lowEdge;//LOW_SEN_POS;
+    long highSenPos = _highEdge;//HIGH_SEN_POS;
 
-    if((regim1 == 0 && regim2 == 0) && (_lowEdge > lowSenPos - REVISION_EXTRA_EDGE))
+    if((regim1 == 0 && regim2 == 0) && (_lowEdge > lowSenPos - RevisionExtraEdge))
     {
-         _lowEdge -= REVISION_EXTRA_EDGE;
+         _lowEdge -= RevisionExtraEdge;
     }
     else if (regim1 != 0 || regim2 != 0)
         _lowEdge = lowSenPos;
 
-    if((regim1 == 0 && regim2 == 0) && (_highEdge < highSenPos + REVISION_EXTRA_EDGE))
+    if((regim1 == 0 && regim2 == 0) && (_highEdge < highSenPos + RevisionExtraEdge))
     {
-        _highEdge += REVISION_EXTRA_EDGE;
+        _highEdge += RevisionExtraEdge;
     }
     else if (regim1 != 0 || regim2 != 0)
         _highEdge = highSenPos;
@@ -646,7 +648,7 @@ void ParseTPDO1(unsigned int sid, unsigned char* data)
         s = *distance;
     if((sid&0x3) == 0x3)
         s = *distance;
-    EncoderPositionCounter = s/DISTANCE_PER_MARK;
+    EncoderPositionCounter = s/distancePerMark;
 }
 
 void ParseTPDO3(unsigned int sid, unsigned char* data)
@@ -706,7 +708,7 @@ void SetSpeedByJoystick()
         unsigned int AdcMaximum = ADC_MAXIMUM;
         unsigned int MaxSpeed = Vmax;
         if(regim1 == 0 && regim2 == 0)
-            MaxSpeed = REVISION_SPEED;
+            MaxSpeed = RevisionSpeed;
 
         float koef = (float)MaxSpeed/AdcMaximum;
         unsigned int AdcNumber = GetAnalogSignal(0);

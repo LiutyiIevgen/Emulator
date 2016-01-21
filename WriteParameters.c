@@ -7,7 +7,7 @@ unsigned char WriteAllParameters()
     char name[] = "inf";
     DeviceInformation deviceInformation;
     deviceInformation.ObjectCount = 7;
-    deviceInformation.ParametersCount = 7;
+    deviceInformation.ParametersCount = 13;
     deviceInformation.SystemName[0] = 0;
     strcat(deviceInformation.SystemName, "don_avto_1");
     deviceInformation.DeviceName[0] = 0;
@@ -23,12 +23,12 @@ unsigned char WriteAllParameters()
         return 0;
 
     char name1[] = "high_edge";
-    long value = -50000;
+    long value = 50000;
     if(!AddParameter(name1,0x10,&value,3))
         return 0;
  
     char name2[] = "low_edge";
-    value = 250000;
+    value = -250000;
     if(!AddParameter(name2,0x10,&value,3))
         return 0;
 
@@ -50,6 +50,36 @@ unsigned char WriteAllParameters()
     char name6[] = "R";
     value = 5;
     if(!AddParameter(name6,0x03,&value,2))
+        return 0;
+
+    char name7[] = "distancePerMark";
+    float fvalue = 0.5;
+    if(!AddParameter(name7,0x08,&fvalue,4))
+        return 0;
+
+    char name8[] = "exactStopZone";
+    value = 100;
+    if(!AddParameter(name8,0x10,&value,3))
+        return 0;
+
+    char name9[] = "slowdown_zone";
+    value = 75000;
+    if(!AddParameter(name9,0x10,&value,3))
+        return 0;
+
+    char name10[] = "RevisionSpeed";
+    value = 2000;
+    if(!AddParameter(name10,0x03,&value,3))
+        return 0;
+
+    char name11[] = "SpeedUpZone";
+    value = 5000;
+    if(!AddParameter(name11,0x03,&value,3))
+        return 0;
+
+    char name12[] = "RevisionExtraEdge";
+    value = 10000;
+    if(!AddParameter(name12,0x03,&value,3))
         return 0;
 /*
     char name7[] = "synch_zone";

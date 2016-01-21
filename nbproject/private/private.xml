@@ -5,7 +5,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Work/Hardware/Emulator_new/Encoder.c</file>
+            <file>file:/C:/Work/Hardware/Emulator_new/Can.c</file>
             <file>file:/C:/Work/Hardware/Emulator_new/main.c</file>
+            <file>file:/C:/Work/Hardware/Emulator_new/CanOpen.c</file>
+            <file>file:/C:/Work/Hardware/Emulator_new/MainLibrary.c</file>
         </group>
     </open-files>
 </project-private>

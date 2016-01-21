@@ -35,6 +35,9 @@
       <itemPath>CanOpen.c</itemPath>
       <itemPath>Parameters.c</itemPath>
       <itemPath>Fat.c</itemPath>
+      <itemPath>FRAM.c</itemPath>
+      <itemPath>Configuration.c</itemPath>
+      <itemPath>Spi.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -119,8 +122,6 @@
       <C30-AR>
         <property key="additional-options-chop-files" value="false"/>
       </C30-AR>
-      <C30-AS>
-      </C30-AS>
       <C30-LD>
         <property key="additional-options-use-response-files" value="false"/>
         <property key="boot-eeprom" value="no_eeprom"/>

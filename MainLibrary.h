@@ -10,5 +10,5 @@
  * @param count of iterations in "for" cycle
  * @todo make a time delay
  */
-void Delay(long count);
+void Delay(long);
 
