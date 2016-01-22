@@ -476,7 +476,7 @@ void EncStopControl()
 
         wasExactStop = 1;
         start=0;
-        Delay(200000);
+        Delay(200);
     }
     if(EncIsDirectionChosen() == 0 && EncReadHandModeSignal() == 0)
     {
