@@ -55,7 +55,14 @@
 // FICD
 #pragma config ICS = ICS_PGD            // Comm Channel Select (Use PGC/EMUC and PGD/EMUD)
 
+typedef struct
+{
+    unsigned int sId;
+    unsigned char rxData[8];
+} PACK;
 
+#define BUF_PACK_LEN    64
+#define BUF_PACK_MASK (BUF_PACK_LEN-1)
 // Function prototype for timer 1 ISR
 void __attribute__((__interrupt__, __auto_psv__)) _T1Interrupt(void);
 // Function prototype for timer 2 ISR
@@ -70,7 +77,8 @@ void __attribute__ ((__interrupt__, __auto_psv__)) _C1Interrupt (void);
 char startSignal = -1;
 char fReadS = 0;
 char interCount = 0;
-
+PACK sdoBuf[BUF_PACK_LEN];
+char in_ptr = 0, out_ptr = 0;
 /*int _nodeId = 5;
 long _lowEdge; //mm
 long _highEdge; //mm
@@ -83,7 +91,7 @@ long halfS;
 long halfV;
 int halfVstart;
 */
-char was_sdo = 0;
+
 int main(int argc, char** argv) {
     ADPCFG = 0xFFFF; //RA only digit
     InitADC();
@@ -119,7 +127,15 @@ int main(int argc, char** argv) {
    /* StartTimer1();
     StartTimer2();
     StartTimer3(); */
-    while(1);
+    while(1)
+    {
+        if(in_ptr != out_ptr)
+        {
+          CanOpenParseRSDO(sdoBuf[out_ptr].sId,sdoBuf[out_ptr].rxData,1); //parse message and send response
+          out_ptr++;
+          out_ptr &= BUF_PACK_MASK;
+        }
+    }
     return (EXIT_SUCCESS);
 }
 
@@ -194,16 +210,13 @@ void __attribute__ ((__interrupt__, __auto_psv__)) _C1Interrupt (void){
         CAN1ReceiveMessage(rxData,8,0);
     } else if (C1INTFbits.RX1IF == 1)
     {
-        sId = C1RX1SIDbits.SID;
+        //sId = C1RX1SIDbits.SID;
+        sdoBuf[in_ptr].sId = C1RX1SIDbits.SID;
         C1INTFbits.RX1IF = 0;
-        CAN1ReceiveMessage(rxData,8,1);
+        CAN1ReceiveMessage(/*rxData*/sdoBuf[in_ptr++].rxData,8,1);
+        in_ptr &= BUF_PACK_MASK;
     }
    
-    if(sId == 0x607)
-    {
-        was_sdo = 1; 
-        //Can1ReceiveData(rxData);
-    }
     if(fReadS == 0 && interCount == 10)
     {
         ExactStopSensors();
@@ -219,8 +232,7 @@ void __attribute__ ((__interrupt__, __auto_psv__)) _C1Interrupt (void){
         interCount++;
     }
     ParseTPDO3(sId, rxData);
-    CanOpenParseRSDO(sId,rxData,1); //parse message and send response
-    
+       
     C1RX0CONbits.RXFUL = 0;
     C1RX1CONbits.RXFUL = 0;
   }
